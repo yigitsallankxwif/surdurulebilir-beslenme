@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0d1a12">
+<title>Sürdürülebilir Beslenme Macerası</title>
+<style>
+:root{--bg:#0d1a12;--card:#16281c;--card2:#1d3526;--ink:#eaf6ee;--muted:#9fc3ab;--accent:#57d98a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Inter","SF Pro Display",system-ui,-apple-system,"Segoe UI Variable","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow:hidden;overscroll-behavior:none}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.hidden{display:none!important}
+#hud{position:fixed;top:0;left:0;right:0;padding:calc(env(safe-area-inset-top) + 10px) 14px 10px;display:flex;align-items:center;gap:10px;z-index:20;pointer-events:none;background:linear-gradient(#0b1610cc,transparent)}
+#hud .title{font-weight:700;font-size:15px;flex:1;min-width:0}
+#hud .title>div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#hud .goal{font-size:10.5px;color:var(--muted);font-weight:400}
+#hud .pill{background:#0f2318cc;border:1px solid #2c4a36;border-radius:999px;padding:5px 11px;font-size:12px;color:var(--muted)}
+#back{pointer-events:auto;background:#16301f;color:var(--ink);border:1px solid #2c4a36;border-radius:12px;padding:8px 12px;font-size:14px}
+#menu{position:fixed;inset:0;overflow:auto;z-index:30;padding:calc(env(safe-area-inset-top) + 18px) 14px 28px;background:radial-gradient(1200px 600px at 50% -10%,#1c3526,#0d1a12 60%)}
+#menu h1{margin:6px 0 2px;font-size:22px;letter-spacing:.2px}
+#menu p.sub{margin:0 0 16px;color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:720px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:1024px){.grid{grid-template-columns:repeat(4,1fr)}}
+#hero{max-width:900px;margin:0 auto 6px;padding:4px 2px 12px}
+.kicker{font-size:10.5px;letter-spacing:2px;color:var(--accent);font-weight:800}
+#hero h1{font-size:26px;line-height:1.15;margin:6px 0 8px}
+#hero .lead{color:var(--muted);font-size:13.5px;line-height:1.5;margin:0 0 12px;max-width:640px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px}
+.chips span{background:#12271a;border:1px solid #2c4a36;color:#bfe0c9;font-size:11px;padding:5px 10px;border-radius:999px}
+.progwrap{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.prog{flex:1;height:8px;background:#12271a;border:1px solid #2c4a36;border-radius:999px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#3f9f6a,#57d98a);transition:width .4s}
+.progtxt{font-size:11.5px;color:var(--muted);white-space:nowrap}
+#continueBtn{width:100%;max-width:340px;background:linear-gradient(180deg,#63e396,#3fbf74);color:#06230f;border:0;border-radius:14px;padding:13px 18px;font-weight:800;font-size:15px;cursor:pointer}
+#continueBtn:active{transform:scale(.98)}
+.chapter{max-width:900px;margin:18px auto 0}
+.chaphead{display:flex;align-items:baseline;gap:10px;margin:0 2px 10px}
+.chaphead b{font-size:15px}
+.chaphead span{font-size:11.5px;color:var(--muted)}
+#foot{max-width:900px;margin:26px auto 10px;text-align:center;font-size:10.5px;color:#6f8a7b;line-height:1.6}
+#hud .title{min-width:0}
+#hud .pill{flex:0 0 auto}
+#back{flex:0 0 auto;font-weight:700}
+.card{overflow:hidden}
+.card .name{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .desc{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+@media(min-width:720px){.card{min-height:124px}}
+.chapter{max-width:900px;margin:20px auto 0}
+.chaphead{margin-top:2px}
+#hero{padding-top:0}
+.card{position:relative;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid #2a4a35;border-radius:16px;padding:12px;min-height:112px;display:flex;flex-direction:column;gap:6px;cursor:pointer;transition:transform .12s ease,border-color .12s}
+.card:active{transform:scale(.97)}
+.card.locked{opacity:.45;cursor:not-allowed}
+.card .num{font-size:11px;color:var(--muted)}
+.card .ico{font-size:26px;line-height:1}
+.card .name{font-weight:700;font-size:13.5px;line-height:1.2}
+.card .desc{font-size:11.5px;color:var(--muted);line-height:1.25}
+.card .badge{position:absolute;top:10px;right:10px;font-size:14px}
+.card .best{position:absolute;bottom:7px;right:10px;font-size:10.5px;color:#ffd166;font-weight:700}
+#msg{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:22px;background:#08120cd9;backdrop-filter:blur(4px)}
+#msg .box{max-width:420px;width:100%;background:linear-gradient(160deg,#1d3526,#14271b);border:1px solid #2f5340;border-radius:20px;padding:20px}
+#msg h2{margin:0 0 8px;font-size:19px}
+#msg p{margin:0 0 16px;color:#cfe8d8;font-size:14px;line-height:1.45}
+#msg button{width:100%;background:var(--accent);color:#08210f;border:0;border-radius:14px;padding:13px;font-weight:800;font-size:15px}
+#loading{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--muted);font-size:14px;text-align:center;padding:20px}
+#toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 18px);transform:translateX(-50%);background:#0f2318ee;border:1px solid #2c4a36;color:var(--ink);padding:9px 14px;border-radius:999px;font-size:13px;z-index:35;pointer-events:none;opacity:0;transition:opacity .2s;max-width:86vw;text-align:center}
+#shop{position:fixed;left:0;right:0;bottom:0;z-index:25;background:#0e1f15f2;border-top:1px solid #2c4a36;padding:10px 12px calc(env(safe-area-inset-bottom) + 12px);max-height:44vh;display:flex;flex-direction:column;gap:8px}
+#shop .row{display:flex;gap:8px;align-items:center;flex:1;overflow:auto}
+#shop .it{background:#16301f;border:1px solid #2c4a36;border-radius:12px;padding:8px 10px;min-width:96px;font-size:12px;cursor:pointer}
+#shop .it.on{border-color:var(--accent);background:#1b4a2d}
+#shop .bar{display:flex;gap:10px;align-items:center;font-size:13px}
+#shop .bar b{color:var(--accent)}
+#shop .go{margin-left:auto;background:var(--accent);color:#08210f;border:0;border-radius:12px;padding:10px 16px;font-weight:800}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="hud" class="hidden">
+  <button id="back">‹</button>
+  <div class="title" id="hudTitle"></div>
+  <div class="pill" id="hudProgress"></div>
+</div>
+<div id="menu">
+  <div id="hero">
+    <div class="kicker">TÜBİTAK · SÜRDÜRÜLEBİLİR BESLENME</div>
+    <h1>Sürdürülebilir Beslenme Macerası</h1>
+    <p class="lead">Gıdayı tanı, doğru bölüme ayır, israfı azalt. 12 bölüm, dokunmatik 3D — internet gerekmez.</p>
+    <div class="chips"><span>12 bölüm</span><span>3 zorluk grubu</span><span>dokunmatik</span><span>çevrimdışı</span></div>
+    <div class="progwrap"><div class="prog"><i id="progBar"></i></div><div id="progTxt" class="progtxt">0 / 12 tamamlandı</div></div>
+    <button id="continueBtn">Başla →</button>
+    <button id="helpBtn" style="margin-left:8px;background:#12271a;border:1px solid #2c4a36;color:#bfe0c9;border-radius:14px;padding:13px 16px;font-weight:700;font-size:13px;cursor:pointer">Nasıl oynanır?</button>
+  </div>
+  <div id="chapters"></div>
+  <div id="foot">3D: Quaternius, Khronos (CC0) · Zsky_01 (CC BY 4.0) · Poly Haven (CC0)<br><button id="resetBtn" style="margin-top:10px;background:#12271a;border:1px solid #2c4a36;color:#bfe0c9;border-radius:10px;padding:7px 14px;font-size:11.5px">İlerlemeyi sıfırla</button></div>
+</div>
+<div id="msg" class="hidden"><div class="box"><h2 id="msgTitle"></h2><p id="msgText"></p><button id="msgBtn">Devam</button></div></div>
+<div id="shop" class="hidden"></div>
+<div id="toast"></div>
+<img id="holdimg" alt="" style="display:none">
+<div id="loading">Yükleniyor…</div>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+window.addEventListener('error', function (ev) { var l = document.getElementById('loading'); if (l) { l.classList.remove('hidden'); l.textContent = 'HATA: ' + (ev.message || (ev.error && ev.error.message) || 'bilinmeyen'); } });
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const TAU = Math.PI * 2;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const KEY = 'sbm.save.v2';
+
+function cv(s) { const c = document.createElement('canvas'); c.width = c.height = s; return c; }
+function tex(canvas, repeat) { const t = new THREE.CanvasTexture(canvas); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat, repeat); t.anisotropy = 4; return t; }
+
+function hash2(x, y, s) { let h = x * 374761393 + y * 668265263 + s * 69069; h = (h ^ (h >> 13)) * 1274126177; return ((h ^ (h >> 16)) >>> 0) / 4294967295; }
+function vnoise(x, y, cells, s) {
+  const fx = x * cells, fy = y * cells;
+  const c = Math.max(1, Math.round(cells));
+  let x0 = Math.floor(fx) % c; if (x0 < 0) x0 += c;
+  let y0 = Math.floor(fy) % c; if (y0 < 0) y0 += c;
+  const tx = fx - Math.floor(fx), ty = fy - Math.floor(fy);
+  const sx = tx * tx * (3 - 2 * tx), sy = ty * ty * (3 - 2 * ty);
+  const a = hash2(x0, y0, s), b = hash2((x0 + 1) % c, y0, s), cc = hash2(x0, (y0 + 1) % c, s), d = hash2((x0 + 1) % c, (y0 + 1) % c, s);
+  const ab = a + (b - a) * sx, bc = cc + (d - cc) * sx;
+  return ab + (bc - ab) * sy;
+}
+function fbm(x, y, s, oct) { let v = 0, amp = 0.5, f = 1; for (let i = 0; i < oct; i++) { v += vnoise(x, y, f * 4, s + i * 17) * amp; amp *= 0.5; f *= 2; } return v; }
+
+function heightToNormal(hc, strength) {
+  const s = hc.width, src = hc.getContext('2d').getImageData(0, 0, s, s).data;
+  const out = cv(s), ctx = out.getContext('2d'), img = ctx.createImageData(s, s), d = img.data;
+  const H = (x, y) => src[(((y + s) % s) * s + ((x + s) % s)) * 4] / 255;
+  for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) {
+    const dx = (H(x + 1, y) - H(x - 1, y)) * strength;
+    const dy = (H(x, y + 1) - H(x, y - 1)) * strength;
+    let nx = -dx, ny = -dy, nz = 1; const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+    const i = (y * s + x) * 4; d[i] = (nx * 0.5 + 0.5) * 255; d[i + 1] = (ny * 0.5 + 0.5) * 255; d[i + 2] = (nz * 0.5 + 0.5) * 255; d[i + 3] = 255;
+  }
+  ctx.putImageData(img, 0, 0); return out;
+}
+
+function makePBR(kind, repeat) {
+  const s = 512;
+  const alb = cv(s), actx = alb.getContext('2d'), aimg = actx.createImageData(s, s), ad = aimg.data;
+  const hgt = new Float32Array(s * s);
+  for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) {
+    const u = x / s, v = y / s; let h = 0.5, r = 150, g = 150, b = 150;
+    if (kind === 'grass') { h = fbm(u, v, 1, 4); const blade = Math.sin(u * TAU * 46) * 0.5 + 0.5; r = 54 + h * 26; g = 104 + h * 40 + (blade - 0.5) * 10; b = 46 + h * 20; }
+    else if (kind === 'wood') { const ring = 0.5 + 0.5 * Math.sin((v * 22 + fbm(u, v, 3, 3) * 5) * Math.PI); h = ring; r = 96 + h * 68; g = 64 + h * 44; b = 38 + h * 24; }
+    else if (kind === 'stone') { h = fbm(u, v, 7, 4); const q = 102 + h * 84; r = q; g = q; b = q * 0.97; }
+    else if (kind === 'tile') { h = fbm(u, v, 29, 3) * 0.2; const gx = Math.min(u, 1 - u), gy = Math.min(v, 1 - v); const grout = (gx < 0.015 || gy < 0.015) ? 0.42 : 1; const q = (198 + h * 40) * grout; r = q; g = q * 0.995; b = q * 0.965; }
+    else if (kind === 'concrete') { h = fbm(u, v, 37, 4); const q = 148 + h * 52; r = q; g = q; b = q * 0.985; }
+    else if (kind === 'dirt') { h = fbm(u, v, 11, 3); r = 72 + h * 56; g = 52 + h * 42; b = 34 + h * 24; }
+    else if (kind === 'fabric') { h = 0.45 + 0.3 * (Math.sin(u * TAU * 18) * 0.5 + 0.5) + fbm(u, v, 13, 2) * 0.25; r = 64 + h * 78; g = 96 + h * 78; b = 140 + h * 68; }
+    else if (kind === 'metal') { h = fbm(u, v, 17, 2) * 0.3; const m = 146 + h * 82; r = m; g = m; b = Math.min(255, m * 1.03); }
+    else { h = fbm(u, v, 19, 2) * 0.2; r = 118 + h * 58; g = 168 + h * 48; b = 120 + h * 48; }
+    const k = y * s + x; hgt[k] = h; const i = k * 4;
+    ad[i] = clamp(r, 0, 255); ad[i + 1] = clamp(g, 0, 255); ad[i + 2] = clamp(b, 0, 255); ad[i + 3] = 255;
+  }
+  actx.putImageData(aimg, 0, 0);
+  const hc = cv(s), hctx = hc.getContext('2d'), himg = hctx.createImageData(s, s), hd = himg.data;
+  for (let k = 0; k < s * s; k++) { const q = hgt[k] * 255, i = k * 4; hd[i] = hd[i + 1] = hd[i + 2] = q; hd[i + 3] = 255; }
+  hctx.putImageData(himg, 0, 0);
+  const rc = cv(s), rctx = rc.getContext('2d'), rimg = rctx.createImageData(s, s), rd = rimg.data;
+  const br = kind === 'metal' ? 0.32 : (kind === 'plastic' ? 0.45 : (kind === 'wood' ? 0.72 : 0.9));
+  for (let k = 0; k < s * s; k++) { const q = clamp((br + (hgt[k] - 0.5) * 0.16) * 255, 0, 255), i = k * 4; rd[i] = rd[i + 1] = rd[i + 2] = q; rd[i + 3] = 255; }
+  rctx.putImageData(rimg, 0, 0);
+  const map = tex(alb, repeat); map.colorSpace = THREE.SRGBColorSpace;
+  const nmap = tex(heightToNormal(hc, 2.2), repeat); nmap.colorSpace = THREE.NoColorSpace;
+  const rmap = tex(rc, repeat); rmap.colorSpace = THREE.NoColorSpace;
+  return new THREE.MeshStandardMaterial({ map: map, normalMap: nmap, roughnessMap: rmap, metalness: kind === 'metal' ? 0.85 : 0.02, roughness: 1.0, normalScale: new THREE.Vector2(1.0, 1.0) });
+}
+const MAT = {};
+function pbr(kind, repeat) { const k = kind + '|' + repeat; if (!MAT[k]) MAT[k] = makePBR(kind, repeat); return MAT[k]; }
+let _meatTex = null;
+function meatTexture() {
+  if (_meatTex) return _meatTex;
+  const s = 256, c = cv(s), g = c.getContext('2d'), img = g.createImageData(s, s), d = img.data;
+  for (let y = 0; y < s; y++) for (let x = 0; x < s; x++) {
+    const u = x / s, v = y / s, marb = fbm(u, v, 23, 4);
+    let r = 138 + marb * 40, gg = 32 + marb * 16, b = 28 + marb * 12;
+    const fat = Math.sin((v * 34 + fbm(u, v, 31, 2) * 16) * Math.PI);
+    if (fat > 0.8) { r = 236; gg = 226; b = 212; }
+    const i = (y * s + x) * 4; d[i] = r; d[i + 1] = gg; d[i + 2] = b; d[i + 3] = 255;
+  }
+  g.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  _meatTex = t; return t;
+}
+let _rockMat = null;
+function rockMaterial(repeat) {
+  const r = repeat || 9;
+  if (!_rockMat) {
+    _rockMat = pbr('stone', r).clone();
+    const tl = new THREE.TextureLoader();
+    function apply(url, slot, isColor) {
+      tl.load(url, function (t) {
+        t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8;
+        t.colorSpace = isColor ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+        t.repeat.set(r, r);
+        _rockMat[slot] = t; _rockMat.needsUpdate = true;
+      }, undefined, function () {});
+    }
+    apply('assets/textures/rock.jpg', 'map', true);
+    apply('assets/textures/rock_nor_gl.jpg', 'normalMap', false);
+    apply('assets/textures/rock_rough.jpg', 'roughnessMap', false);
+    _rockMat.userData.rocky = true;
+  }
+  return _rockMat;
+}
+let _rubberMat = null;
+function rubberMaterial(repeat) {
+  const r = repeat || 10;
+  if (!_rubberMat) {
+    _rubberMat = pbr('stone', r).clone();
+    const tl = new THREE.TextureLoader();
+    function app(url, slot, isColor) {
+      tl.load(url, function (t) {
+        t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = 8;
+        t.colorSpace = isColor ? THREE.SRGBColorSpace : THREE.NoColorSpace;
+        t.repeat.set(r, r); _rubberMat[slot] = t; _rubberMat.needsUpdate = true;
+      }, undefined, function () {});
+    }
+    app('assets/textures/rubber.jpg', 'map', true);
+    app('assets/textures/rubber_nor_gl.jpg', 'normalMap', false);
+    app('assets/textures/rubber_rough.jpg', 'roughnessMap', false);
+  }
+  return _rubberMat;
+}
+
+
+
+// ---------------- GLB model pipeline ----------------
+// Anahtar -> dosya. Dosya varsa GLB yüklenir, yoksa prosedürel geometriye düşer.
+const MODEL_MAP = { avocado: 'assets/models/avocado.glb', water_bottle: 'assets/models/water_bottle.glb' };
+const ITEM_MODELS = {
+  'Mercimek': 'lentil', 'Nohut': 'chickpea', 'Fasulye': 'beans', 'Et': 'meat', 'Yumurta': 'egg',
+  'Çilek': 'strawberry', 'Enginar': 'artichoke', 'Karpuz': 'watermelon', 'Domates': 'tomato', 'Elma': 'apple', 'Üzüm': 'grapes', 'Portakal': 'orange', 'Ispanak': 'spinach',
+  'Domates · Yerel': 'tomato', 'Salatalık · Yerel': 'cucumber', 'Biber · Yerel': 'pepper', 'Avokado · İthal': 'avocado', 'Muz · İthal': 'banana', 'Kivi · İthal': 'kiwi',
+  'Tarla': 'field', 'Hasat': 'harvest', 'Depo': 'warehouse', 'Nakliye': 'truck', 'Market': 'market', 'Sofra': 'table',
+  'Buğday': 'wheat', 'Arpa': 'barley', 'Biber': 'pepper',
+  'Su Şişesi': 'water_bottle', 'Süt Kutusu': 'milk_carton', 'Cam Kavanoz': 'glass_jar', 'Naylon Poşet': 'plastic_bag', 'Pipet': 'straw',
+  'Çürük Domates': 'rotten_tomato', 'Tarihi Geçmiş Yoğurt': 'yogurt', 'Unutulmuş Marul': 'lettuce', 'Taze Ekmek': 'bread', 'Yeni Süt': 'milk',
+  'Bayat Ekmek': 'bread', 'Peynir': 'cheese', 'Küflü Ekmek': 'moldy_bread', 'Çiğ Tavuk': 'chicken', 'Bozuk Süt': 'milk',
+  'Brokoli': 'broccoli', 'Bulgur': 'bulgur',
+  'Salma Sulama': 'irrigation', 'Yağmurlama': 'sprinkler', 'Damlama Sulama': 'drip'
+};
+Object.assign(ITEM_MODELS, { 'Havuç': 'carrot', 'Süt': 'milk', 'Tavuk': 'chicken', 'Marul': 'lettuce', 'Balkabağı': 'pumpkin', 'Mantar': 'mushroom', 'Marul · Yerel': 'lettuce', 'Hindistan Cevizi · İthal': 'coconut', 'Soda Kutusu': 'soda', 'Cam Kavanoz': 'glass_jar', 'Süt Kutusu': 'carton_box', 'Tabak': 'plate', 'Kase': 'bowl' });
+let _manifestDone = false;
+async function ensureManifest() {
+  if (_manifestDone) return;
+  _manifestDone = true;
+  try { const r = await fetch('assets/models/manifest.json'); if (r.ok) Object.assign(MODEL_MAP, await r.json()); } catch (e) {}
+}
+let GLB_LOADED = 0;
+const glbLoader = new GLTFLoader();
+const glbCache = {};
+function loadGLB(url) {
+  if (!glbCache[url]) glbCache[url] = new Promise(function (res, rej) {
+    let done = false;
+    const to = setTimeout(function () { if (!done) { done = true; rej(new Error('glb timeout')); } }, 15000);
+    glbLoader.load(url, function (g) { if (done) return; done = true; clearTimeout(to); res(g.scene); }, undefined, function (e) { if (done) return; done = true; clearTimeout(to); rej(e); });
+  });
+  return glbCache[url];
+}
+function prepModel(root, targetH, tint, key) {
+  const isMeat = (key === 'meat' || key === 'steak');
+  const isTree = /tree|birch|willow|pine/i.test(key || '');
+  root.updateWorldMatrix(true, true);
+  const bb0 = new THREE.Box3().setFromObject(root);
+  const h0 = (bb0.max.y - bb0.min.y) || 1;
+  const trunkCut = bb0.min.y + h0 * 0.38;
+  const fol = new THREE.Color(tint === undefined || tint === null ? 0x4f8f3a : tint).offsetHSL((Math.random() - 0.5) * 0.03, 0, (Math.random() - 0.5) * 0.08);
+  var meatMax = 0;
+  if (isMeat) { root.traverse(function (o) { if (o.isMesh) { var vb = new THREE.Box3().setFromObject(o); var vs = vb.getSize(new THREE.Vector3()); o.userData._vol = vs.x * vs.y * vs.z; if (o.userData._vol > meatMax) meatMax = o.userData._vol; } }); }
+
+  root.traverse(function (o) {
+    if (!o.isMesh) return;
+    o.castShadow = true; o.receiveShadow = true; o.userData.glb = true;
+    var mats = Array.isArray(o.material) ? o.material : [o.material];
+    var isTrunk = false;
+    if (isTree) { var mb = new THREE.Box3().setFromObject(o); isTrunk = ((mb.min.y + mb.max.y) / 2) < trunkCut; }
+    var out = [];
+    for (var j = 0; j < mats.length; j++) {
+      var c = mats[j].clone();
+      c.flatShading = false;
+      var cartoon = (c.name === 'Cartoon_Mat');
+      if (isTree) { c.map = null; c.color = isTrunk ? new THREE.Color(0x6b4a2f) : fol.clone(); c.roughness = isTrunk ? 0.85 : 0.7; c.metalness = 0.0; }
+      else if (isMeat) { c.map = null; var isBone = (o.userData._vol !== undefined && meatMax > 0 && o.userData._vol < meatMax * 0.45); c.color = new THREE.Color(isBone ? 0xf2efe6 : (tint === undefined || tint === null ? 0xc0392b : tint)); c.roughness = isBone ? 0.45 : 0.55; c.metalness = 0.0; }
+      else if (cartoon) { c.map = null; c.color = new THREE.Color(tint === undefined || tint === null ? 0xcccccc : tint); c.roughness = 0.6; c.metalness = 0.02; }
+      else if (!c.map && tint !== undefined && tint !== null) { c.color = new THREE.Color(tint); c.roughness = 0.62; c.metalness = 0.02; }
+      out.push(c);
+    }
+    o.material = Array.isArray(o.material) ? out : out[0];
+  });
+  root.updateWorldMatrix(true, true);
+  const b = new THREE.Box3().setFromObject(root);
+  const size = b.getSize(new THREE.Vector3());
+  const md = Math.max(size.x, size.y, size.z) || 1;
+  root.scale.multiplyScalar((targetH || 0.9) / md);
+  root.updateWorldMatrix(true, true);
+  const b2 = new THREE.Box3().setFromObject(root);
+  const c = b2.getCenter(new THREE.Vector3());
+  root.position.x -= c.x; root.position.z -= c.z; root.position.y -= b2.min.y;
+  GLB_LOADED++;
+  const holder = new THREE.Group(); holder.add(root); return holder;
+}
+// --- tanınabilir prosedürel modeller (GLB yoksa) ---
+function procShape(key, color) {
+  const g = new THREE.Group();
+  const C = color === undefined ? 0xcccccc : color;
+  const mat = (c, r) => new THREE.MeshStandardMaterial({ color: c, roughness: r === undefined ? 0.62 : r, metalness: 0.02, flatShading: true });
+  const put = (geo, m, x, y, z) => { const o = new THREE.Mesh(geo, m); o.position.set(x || 0, y || 0, z || 0); o.castShadow = true; o.receiveShadow = true; g.add(o); return o; };
+  const SP = (r, w) => new THREE.SphereGeometry(r, w || 10, w || 8);
+  const CY = (rt, rb, h, s) => new THREE.CylinderGeometry(rt, rb, h, s || 10);
+  const BX = (a, b, c) => new THREE.BoxGeometry(a, b, c);
+  const CO = (r, h, s) => new THREE.ConeGeometry(r, h, s || 10);
+  if (key === 'lentil' || key === 'chickpea') {
+    const m = mat(C);
+    for (let i = 0; i < 16; i++) { const a = i * 2.399, rr = 0.06 + (i % 4) * 0.085; const o = put(SP(key === 'lentil' ? 0.11 : 0.12, 8), m, Math.cos(a) * rr, 0.1 + (i % 2) * 0.08, Math.sin(a) * rr); if (key === 'lentil') o.scale.y = 0.55; }
+  } else if (key === 'beans') {
+    const m = mat(C);
+    for (let i = 0; i < 5; i++) { const o = put(SP(0.12, 8), m, (i - 2) * 0.14, 0.12, (i % 2) * 0.1); o.scale.set(0.6, 0.5, 1.5); o.rotation.y = i * 0.5; }
+  } else if (key === 'strawberry') {
+    put(CO(0.28, 0.5, 8), mat(C, 0.5), 0, 0.25, 0);
+    const lf = put(CO(0.2, 0.12, 6), mat(0x2f7d3a), 0, 0.52, 0); lf.rotation.x = Math.PI;
+  } else if (key === 'artichoke') {
+    put(SP(0.22, 8), mat(0x5c7a3a, 0.7), 0, 0.2, 0);
+    put(CO(0.2, 0.3, 8), mat(0x6f8f4a, 0.7), 0, 0.42, 0);
+    put(CO(0.12, 0.16, 8), mat(0x7f9f55, 0.7), 0, 0.58, 0);
+  } else if (key === 'grapes') {
+    const m = mat(C, 0.45);
+    for (let i = 0; i < 12; i++) { const a = i * 2.399, rr = 0.05 + (i % 4) * 0.07; put(SP(0.085, 8), m, Math.cos(a) * rr, 0.18 + i * 0.045, Math.sin(a) * rr); }
+    put(CY(0.02, 0.02, 0.14, 6), mat(0x4a5a2a), 0, 0.72, 0);
+  } else if (key === 'cucumber') {
+    const o = put(CY(0.12, 0.12, 0.72, 10), mat(C, 0.55), 0, 0.14, 0); o.rotation.z = Math.PI / 2;
+    put(SP(0.12, 8), mat(C, 0.55), -0.36, 0.14, 0); put(SP(0.12, 8), mat(C, 0.55), 0.36, 0.14, 0);
+  } else if (key === 'kiwi') {
+    put(SP(0.24, 12), mat(0x6b5a3a, 0.9), 0, 0.24, 0);
+    const s = put(CY(0.2, 0.2, 0.04, 12), mat(0x7fbf4a, 0.5), 0, 0.26, 0.21); s.rotation.x = Math.PI / 2;
+  } else if (key === 'bulgur') {
+    put(CY(0.3, 0.22, 0.2, 12), mat(0xd8b871, 0.7), 0, 0.1, 0);
+    const m = mat(0xcaa95e, 0.8);
+    for (let i = 0; i < 14; i++) { const a = i * 2.399, rr = (i % 4) * 0.06; put(SP(0.035, 6), m, Math.cos(a) * rr, 0.22, Math.sin(a) * rr); }
+  } else if (key === 'yogurt') {
+    put(CY(0.24, 0.19, 0.36, 12), mat(0xe8eef2, 0.5), 0, 0.18, 0);
+    put(CY(0.22, 0.22, 0.04, 12), mat(0xfbfdff, 0.4), 0, 0.37, 0);
+    put(CY(0.25, 0.25, 0.06, 12), mat(C, 0.6), 0, 0.02, 0);
+  } else if (key === 'barley') {
+    put(CY(0.02, 0.03, 0.7, 6), mat(0xb9a24a), 0, 0.35, 0);
+    const m = mat(0xd8c070);
+    for (let i = 0; i < 7; i++) { const o = put(SP(0.06, 6), m, (i % 2 ? 0.06 : -0.06), 0.42 + i * 0.06, 0); o.scale.set(0.7, 1.4, 0.7); }
+  } else if (key === 'milk_carton') {
+    put(BX(0.34, 0.56, 0.34), mat(C, 0.55), 0, 0.28, 0);
+    put(CY(0.17, 0.24, 0.16, 4), mat(C, 0.55), 0, 0.62, 0);
+    put(BX(0.36, 0.14, 0.36), mat(0x2f7d4f, 0.6), 0, 0.2, 0);
+  } else if (key === 'plastic_bag') {
+    put(BX(0.5, 0.44, 0.06), mat(C, 0.4), 0, 0.26, 0);
+    const h1 = put(new THREE.TorusGeometry(0.08, 0.015, 6, 12), mat(C, 0.4), -0.12, 0.52, 0); h1.rotation.x = Math.PI / 2;
+    const h2 = put(new THREE.TorusGeometry(0.08, 0.015, 6, 12), mat(C, 0.4), 0.12, 0.52, 0); h2.rotation.x = Math.PI / 2;
+  } else if (key === 'straw') {
+    const o = put(CY(0.035, 0.035, 0.6, 8), mat(C, 0.4), 0, 0.3, 0); o.rotation.z = Math.PI / 2.3;
+  } else if (key === 'field') {
+    put(BX(0.8, 0.08, 0.5), mat(0x6b4a2f), 0, 0.04, 0);
+    for (let i = 0; i < 3; i++) put(BX(0.7, 0.06, 0.08), mat(0x4f7d3a), 0, 0.1, -0.15 + i * 0.15);
+  } else if (key === 'truck') {
+    put(BX(0.5, 0.34, 0.3), mat(C, 0.6), 0.1, 0.32, 0);
+    put(BX(0.24, 0.26, 0.28), mat(0xdfe6ea, 0.5), -0.22, 0.28, 0);
+    for (const dx of [-0.2, 0.16]) for (const dz of [-0.14, 0.14]) { const w = put(CY(0.07, 0.07, 0.06, 10), mat(0x222222, 0.8), dx, 0.08, dz); w.rotation.x = Math.PI / 2; }
+  } else if (key === 'market') {
+    for (const dx of [-0.34, 0.34]) for (const dz of [-0.24, 0.24]) put(CY(0.02, 0.02, 0.5, 6), mat(0x8a6b4a), dx, 0.25, dz);
+    put(BX(0.8, 0.05, 0.6), mat(C, 0.7), 0, 0.5, 0);
+    put(BX(0.8, 0.16, 0.06), mat(0xdfe6ea, 0.7), 0, 0.42, -0.26);
+    put(BX(0.7, 0.05, 0.5), mat(0xb58b4a), 0, 0.16, 0);
+  } else if (key === 'warehouse') {
+    put(BX(0.7, 0.4, 0.55), mat(C, 0.7), 0, 0.2, 0);
+    put(CY(0.5, 0.5, 0.18, 4), mat(0x8a3b3b, 0.7), 0, 0.45, 0);
+    put(BX(0.2, 0.22, 0.02), mat(0x6b4a2f), 0, 0.12, 0.28);
+  } else if (key === 'table') {
+    put(CY(0.42, 0.42, 0.06, 16), mat(C, 0.55), 0, 0.42, 0);
+    for (let i = 0; i < 3; i++) { const a = i * 2.094; put(CY(0.03, 0.03, 0.4, 6), mat(0x8a6b4a), Math.cos(a) * 0.3, 0.2, Math.sin(a) * 0.3); }
+  } else if (key === 'irrigation') {
+    put(BX(0.8, 0.08, 0.5), mat(0x6b4a2f), 0, 0.04, 0);
+    put(BX(0.7, 0.05, 0.12), mat(0x3f8fd0, 0.25), 0, 0.1, 0);
+  } else if (key === 'sprinkler') {
+    put(CY(0.03, 0.04, 0.55, 8), mat(0x9aa4ab, 0.4), 0, 0.28, 0);
+    put(CO(0.1, 0.14, 10), mat(0xdfe6ea, 0.4), 0, 0.6, 0);
+    const m = mat(0x9fd7ff, 0.3);
+    for (let i = 0; i < 6; i++) { const a = i * 1.047; put(SP(0.03, 6), m, Math.cos(a) * 0.22, 0.72, Math.sin(a) * 0.22); }
+  } else if (key === 'drip') {
+    const p = put(CY(0.035, 0.035, 0.8, 8), mat(0x3f8fd0, 0.4), 0, 0.2, 0); p.rotation.z = Math.PI / 2;
+    for (let i = 0; i < 4; i++) put(SP(0.035, 6), mat(0x9fd7ff, 0.3), -0.3 + i * 0.2, 0.16, 0);
+  } else {
+    put(SP(0.22, 10), mat(C), 0, 0.22, 0);
+  }
+  g.updateWorldMatrix(true, true);
+  const bb = new THREE.Box3().setFromObject(g);
+  const c = bb.getCenter(new THREE.Vector3());
+  for (const ch of g.children) { ch.position.x -= c.x; ch.position.z -= c.z; ch.position.y -= bb.min.y; }
+  return g;
+}
+function decorate(body, key) {
+  const b = new THREE.Box3().setFromObject(body);
+  const size = b.getSize(new THREE.Vector3());
+  const top = b.max.y, h = size.y || 1;
+  const cx = (b.min.x + b.max.x) / 2, cz = (b.min.z + b.max.z) / 2;
+  const green = new THREE.MeshStandardMaterial({ color: 0x3f8f3a, roughness: 0.55, metalness: 0.0 });
+  const white = new THREE.MeshStandardMaterial({ color: 0xf2efe6, roughness: 0.45, metalness: 0.0 });
+  function add(geo, mat, x, y, z, rx, ry, rz) { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); if (rx) m.rotation.x = rx; if (ry) m.rotation.y = ry; if (rz) m.rotation.z = rz; m.castShadow = true; body.add(m); return m; }
+  if (key === 'apple' || key === 'tomato') {
+    add(new THREE.CylinderGeometry(0.014, 0.02, 0.09, 6), green, cx, top + 0.02, cz);
+    if (key === 'tomato') {
+      for (let i = 0; i < 6; i++) { const a = i * 1.047; add(new THREE.ConeGeometry(0.03, 0.11, 3), green, cx + Math.cos(a) * 0.06, top + 0.005, cz + Math.sin(a) * 0.06, -Math.PI / 2, 0, a); }
+    } else {
+      add(new THREE.ConeGeometry(0.03, 0.08, 3), green, cx + 0.05, top + 0.03, cz, -Math.PI / 2, 0, 0.9);
+    }
+  } else if (key === 'carrot') {
+    for (let i = 0; i < 6; i++) { const a = i * 1.047; add(new THREE.ConeGeometry(0.032, 0.36, 4), green, cx + Math.cos(a) * 0.035, top + 0.14, cz + Math.sin(a) * 0.035, 0.22 * Math.cos(a), a, 0.22 * Math.sin(a)); }
+  } else if (key === 'chicken') {
+    const alongX = size.x >= size.z;
+    const cyy = b.min.y + h * 0.5;
+    const L = Math.max(0.2, (alongX ? size.x : size.z) * 0.55);
+    if (alongX) {
+      add(new THREE.CylinderGeometry(0.034, 0.034, L, 8), white, b.max.x - L * 0.35, cyy, cz, 0, 0, Math.PI / 2);
+      add(new THREE.SphereGeometry(0.058, 10, 8), white, b.max.x + 0.03, cyy, cz);
+    } else {
+      add(new THREE.CylinderGeometry(0.034, 0.034, L, 8), white, cx, cyy, b.max.z - L * 0.35, Math.PI / 2, 0, 0);
+      add(new THREE.SphereGeometry(0.058, 10, 8), white, cx, cyy, b.max.z + 0.03);
+    }
+  }
+}
+
+async function makeVisual(it) {
+  const key = it.model || ITEM_MODELS[it.label];
+  if (key && MODEL_MAP[key]) {
+    try {
+      const s = await loadGLB(MODEL_MAP[key]);
+      const BUNDLE = { wheat: 10, barley: 10, field: 10, harvest: 10 };
+      if (BUNDLE[key]) {
+        const single = prepModel(s.clone(true), 0.6, it.color, key);
+        const g2 = new THREE.Group();
+        for (let i = 0; i < BUNDLE[key]; i++) {
+          const c = single.clone(true);
+          c.position.set((Math.random() - 0.5) * 0.6, 0, (Math.random() - 0.5) * 0.6);
+          c.rotation.y = Math.random() * 6.28;
+          g2.add(c);
+        }
+        return g2;
+      }
+      const th = (key === 'carrot') ? 1.0 : (it.h || 0.9);
+      const m = prepModel(s.clone(true), th, it.color, key);
+      if (key === 'chicken') decorate(m, key);
+      return m;
+    } catch (e) { console.warn('GLB yuklenemedi:', key, e); }
+  }
+  if (key) return procShape(key, it.color);
+  return makeFood(it.shape, it.color, 0.45);
+}
+function showLoading(on, text) {
+  const el = document.getElementById('loading');
+  if (on) { el.textContent = text || 'Yükleniyor…'; el.classList.remove('hidden'); }
+  else el.classList.add('hidden');
+}
+
+// ---------------- renderer / scene ----------------
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: false, powerPreference: 'high-performance', preserveDrawingBuffer: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.5 : 1.8));
+renderer.setSize(innerWidth, innerHeight, false);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.02;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0e1a13);
+scene.fog = new THREE.Fog(0x0e1a13, 24, 54);
+
+const camera = new THREE.PerspectiveCamera(55, innerWidth / innerHeight, 0.1, 140);
+camera.position.set(0, 8, 11);
+camera.lookAt(0, 0.4, 0);
+
+const hemi = new THREE.HemisphereLight(0xbfe6ff, 0x2a2218, 0.85); scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xfff0d2, 2.1);
+sun.position.set(7, 13, 7); sun.castShadow = true;
+sun.shadow.mapSize.set(1024, 1024);
+sun.shadow.camera.left = -14; sun.shadow.camera.right = 14;
+sun.shadow.camera.top = 14; sun.shadow.camera.bottom = -14;
+sun.shadow.camera.near = 1; sun.shadow.camera.far = 42; sun.shadow.bias = -0.0006;
+scene.add(sun);
+const fill = new THREE.PointLight(0x9fd7ff, 0.45, 34); fill.position.set(-6, 6, -4); scene.add(fill);
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(90, 90), pbr('grass', 12));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+function onResize() {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight, false);
+  if (app.current) frameCamera(app.current);
+}
+addEventListener('resize', onResize);
+addEventListener('orientationchange', function () { setTimeout(onResize, 80); });
+
+// ---------------- helpers ----------------
+function roundRect(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+
+function makeLabel(text, color) {
+  const fs = 96, pad = 26, c = document.createElement('canvas'), m = c.getContext('2d');
+  const FF = '800 ' + fs + 'px "Inter","Segoe UI Variable",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif';
+  m.font = FF;
+  const w = Math.ceil(m.measureText(text).width) + pad * 2, h = fs + pad * 2;
+  c.width = w; c.height = h;
+  const g = c.getContext('2d');
+  g.font = FF; g.textAlign = 'center'; g.textBaseline = 'middle';
+  if ('letterSpacing' in g) g.letterSpacing = '2px';
+  g.fillStyle = 'rgba(4,18,10,0.72)'; roundRect(g, 2, 2, w - 4, h - 4, 30); g.fill();
+  g.fillStyle = color || '#eafff2'; g.fillText(text, w / 2, h / 2 + 4);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8;
+  const mat = new THREE.SpriteMaterial({ map: t, transparent: true, depthTest: false, depthWrite: false });
+  const sp = new THREE.Sprite(mat);
+  let sx = (w / h) * 0.52, sy = 0.52;
+  const maxW = 2.2;
+  if (sx > maxW) { const k = maxW / sx; sx *= k; sy *= k; }
+  sp.scale.set(sx, sy, 1); sp.renderOrder = 10;
+  sp.userData.isLabel = true; sp.userData.ownTex = true;
+  return sp;
+}
+
+const blobCanvas = (function () {
+  const s = 128, c = cv(s), g = c.getContext('2d');
+  const grd = g.createRadialGradient(s / 2, s / 2, 2, s / 2, s / 2, s / 2);
+  grd.addColorStop(0, 'rgba(0,0,0,0.55)'); grd.addColorStop(0.55, 'rgba(0,0,0,0.22)'); grd.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = grd; g.fillRect(0, 0, s, s); return c;
+})();
+const blobTex = new THREE.CanvasTexture(blobCanvas); blobTex.colorSpace = THREE.NoColorSpace;
+const blobMat = new THREE.MeshBasicMaterial({ map: blobTex, transparent: true, depthWrite: false, opacity: 0.9 });
+function addBlob(parent, size) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(size, size), blobMat);
+  m.rotation.x = -Math.PI / 2; m.position.y = 0.015; m.renderOrder = 1; parent.add(m); return m;
+}
+
+function makeBasket(hex) {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color: hex, roughness: 0.85, metalness: 0.0, side: THREE.DoubleSide });
+  const R = 1.14, rb = 0.86, H = 0.52;
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(R, rb, H, 16, 1, true), mat);
+  body.position.y = H / 2; body.castShadow = true; body.receiveShadow = true; g.add(body);
+  const bottom = new THREE.Mesh(new THREE.CylinderGeometry(rb, rb, 0.07, 16), mat);
+  bottom.position.y = 0.035; bottom.castShadow = true; g.add(bottom);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(R, 0.055, 8, 24), mat);
+  rim.rotation.x = Math.PI / 2; rim.position.y = H; g.add(rim);
+  for (let i = 0; i < 3; i++) {
+    const rr = rb + (R - rb) * (i / 3);
+    const r = new THREE.Mesh(new THREE.TorusGeometry(rr, 0.024, 6, 20), mat);
+    r.rotation.x = Math.PI / 2; r.position.y = 0.12 + i * 0.14; g.add(r);
+  }
+  const handle = new THREE.Mesh(new THREE.TorusGeometry(R * 0.95, 0.04, 10, 26, Math.PI), mat);
+  handle.rotation.y = Math.PI / 2; handle.position.y = H; handle.castShadow = true; g.add(handle);
+  return g;
+}
+
+function makeTrashCan(hex) {
+  const g = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({ color: hex || 0x6f7a80, roughness: 0.55, metalness: 0.55 });
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 0.82, 1.15, 16), mat);
+  body.position.y = 0.575; body.castShadow = true; body.receiveShadow = true; g.add(body);
+  const rim = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.06, 8, 22), mat);
+  rim.rotation.x = Math.PI / 2; rim.position.y = 1.15; g.add(rim);
+  const lid = new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.05, 0.1, 18), mat);
+  lid.position.y = 1.2; lid.castShadow = true; g.add(lid);
+  const handle = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.03, 6, 12, Math.PI), mat);
+  handle.rotation.y = Math.PI / 2; handle.position.y = 1.25; g.add(handle);
+  for (let i = 0; i < 3; i++) { const ring = new THREE.Mesh(new THREE.TorusGeometry(0.98 - i * 0.04, 0.02, 6, 18), mat); ring.rotation.x = Math.PI / 2; ring.position.y = 0.25 + i * 0.25; g.add(ring); }
+  return g;
+}
+
+function makeFood(shape, color, r) {
+  r = r || 0.4; let geo;
+  if (shape === 'box') geo = new THREE.BoxGeometry(r * 1.7, r * 1.25, r * 1.25);
+  else if (shape === 'cyl') geo = new THREE.CylinderGeometry(r * 0.8, r * 0.8, r * 2, 10);
+  else if (shape === 'cone') geo = new THREE.ConeGeometry(r * 0.7, r * 2, 8);
+  else if (shape === 'sphere') geo = new THREE.SphereGeometry(r, 12, 10);
+  else geo = new THREE.IcosahedronGeometry(r, 0);
+  const mat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.55, metalness: 0.02, flatShading: true });
+  const m = new THREE.Mesh(geo, mat); m.castShadow = true; m.receiveShadow = true;
+  m.userData.ownMat = true; return m;
+}
+
+const _box = new THREE.Box3();
+function settleGroup(g) {
+  const body = g.userData.body; if (!body) return;
+  g.updateWorldMatrix(true, true); _box.setFromObject(body);
+  g.position.y += (0 - _box.min.y);
+}
+
+const raycaster = new THREE.Raycaster();
+const ptr = new THREE.Vector2();
+function setPtr(e) {
+  const r = canvas.getBoundingClientRect();
+  ptr.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  ptr.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  raycaster.setFromCamera(ptr, camera);
+}
+
+function meshBox(root) {
+  const b = new THREE.Box3(); root.updateWorldMatrix(true, true);
+  root.traverse(function (o) { if (o.isMesh) b.union(new THREE.Box3().setFromObject(o)); });
+  return b;
+}
+function frameCamera(level) {
+  if (level.camOverride) { const o = level.camOverride; camera.position.set(o.pos[0], o.pos[1], o.pos[2]); camera.lookAt(o.target[0], o.target[1], o.target[2]); camera.updateProjectionMatrix(); return; }
+  const b = meshBox(level.group);
+  if (b.isEmpty()) return;
+  const size = b.getSize(new THREE.Vector3()), c = b.getCenter(new THREE.Vector3());
+  const fov = camera.fov * Math.PI / 180;
+  const tanHalf = Math.tan(fov / 2);
+  const aspect = camera.aspect || (innerWidth / innerHeight);
+  const distH = (size.x * 0.5) / (tanHalf * aspect);
+  const distV = (size.z * 1.05 * 0.5) / tanHalf;
+  const dist = Math.max(distH, distV, 4.5) * 1.28;
+  camera.position.set(c.x, c.y + dist * 0.6, c.z + dist * 0.85);
+  camera.lookAt(c.x, (level.camTargetY !== undefined ? level.camTargetY : 0.35), c.z);
+  camera.updateProjectionMatrix();
+}
+
+// ---------------- app / UI ----------------
+let _actx = null;
+function sfx(kind) {
+  try {
+    if (!_actx) _actx = new (window.AudioContext || window.webkitAudioContext)();
+    const t = _actx.currentTime;
+    const o = _actx.createOscillator(), g = _actx.createGain();
+    o.connect(g); g.connect(_actx.destination);
+    if (kind === 'ok') { o.type = 'sine'; o.frequency.setValueAtTime(660, t); o.frequency.exponentialRampToValueAtTime(990, t + 0.12); }
+    else if (kind === 'bad') { o.type = 'sawtooth'; o.frequency.setValueAtTime(220, t); o.frequency.exponentialRampToValueAtTime(115, t + 0.18); }
+    else { o.type = 'triangle'; o.frequency.setValueAtTime(523, t); o.frequency.setValueAtTime(659, t + 0.12); o.frequency.setValueAtTime(784, t + 0.24); }
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.16, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + (kind === 'done' ? 0.45 : 0.22));
+    o.start(t); o.stop(t + (kind === 'done' ? 0.5 : 0.25));
+  } catch (e) {}
+}
+
+const app = {
+  scene: scene, camera: camera, renderer: renderer, current: null,
+  setProgress: function (n, total, score) {
+    const el = document.getElementById('hudProgress');
+    if (el) el.textContent = n + ' / ' + total + (score !== undefined ? ' · ' + score + ' p' : '');
+  },
+  toast: function (msg) {
+    const t = document.getElementById('toast'); t.textContent = msg; t.style.opacity = '1';
+    clearTimeout(app._tt); app._tt = setTimeout(function () { t.style.opacity = '0'; }, 1600);
+  }
+};
+
+let save = { unlocked: 1, done: {} };
+try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s && s.unlocked) save = s; } catch (e) {}
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(save)); } catch (e) {} }
+
+// ---------------- base Level ----------------
+class Level {
+  constructor(def) { this.def = def; this.group = new THREE.Group(); scene.add(this.group); this.draggables = []; this.zones = []; this.drag = null; this.total = 0; this.correct = 0; this.score = 0; this.finished = false; this.t = 0; }
+  award(points) {
+    this.score += points;
+    app.setProgress(this.correct || 0, this.total || 0, this.score);
+    sfx(points > 0 ? 'ok' : 'bad');
+    try { if (navigator.vibrate) navigator.vibrate(points > 0 ? 25 : 70); } catch (e) {}
+  }
+  build() {}
+  update(dt) { this.t += dt; }
+  pickDown(ray) {}
+  pickMove(ray) {}
+  pickUp(ray) {}
+  dispose() {
+    scene.remove(this.group);
+    this.group.traverse(function (o) {
+      if (o.userData && o.userData.glb) return;
+      if (o.geometry) o.geometry.dispose();
+      if (o.userData && o.userData.isLabel && o.material) { if (o.material.map) o.material.map.dispose(); o.material.dispose(); }
+      else if (o.userData && o.userData.ownMat && o.material) o.material.dispose();
+    });
+  }
+  finish() {
+    if (this.finished) return; this.finished = true;
+    app.current = this; this.appFinish();
+  }
+  appFinish() {
+    save.done[this.def.id] = true;
+    save.best = save.best || {};
+    save.best[this.def.id] = Math.max(save.best[this.def.id] || 0, this.score || 0);
+    save.unlocked = Math.max(save.unlocked, Math.min(this.def.id + 1, 12));
+    persist();
+    sfx('done');
+    showMessage('Bölüm tamam! ✓', this.def.msg + '\n\nPuan: ' + this.score, function () { app.showMenu(); });
+  }
+}
+
+// drag & drop into zones
+class DragSort extends Level {
+  async build() {
+    const d = this.def, self = this;
+    for (let i = 0; i < d.zones.length; i++) {
+      const z = d.zones[i];
+      const g = new THREE.Group();
+      const x = (i - (d.zones.length - 1) / 2) * (d.zoneGap || 3.0);
+      g.position.set(x, 0, d.zoneZ === undefined ? -1.4 : d.zoneZ);
+      const bsize = (d.zones.length > 3) ? 1.95 : 2.35;
+      let placed = false;
+      if (z.shape === 'trash') { let tcOk = false; if (MODEL_MAP['trash_can']) { try { const s3 = await loadGLB(MODEL_MAP['trash_can']); const tc = prepModel(s3.clone(true), 1.7, null, 'trash_can'); g.add(tc); tcOk = true; } catch (e) {} } if (!tcOk) g.add(makeTrashCan(z.color)); placed = true; }
+      if (!placed) { const wb = MODEL_MAP['wicker_basket']; if (wb) { try { const s2 = await loadGLB(wb); const bk = prepModel(s2.clone(true), bsize, null, 'wicker_basket'); g.add(bk); placed = true; } catch (e) {} } }
+      if (!placed) g.add(makeBasket(z.color));
+      g.userData.spreadX = bsize * 0.26; g.userData.spreadZ = bsize * 0.21; g.userData.labelY = bsize * 0.68; g.userData.dropRadius = bsize * 0.62;
+      const lab = makeLabel(z.label, '#eafff2'); lab.position.set(0, g.userData.labelY, 0); g.add(lab);
+      g.userData.zone = z.id; g.userData.accept = z.id; g.userData.count = 0;
+      self.group.add(g); self.zones.push(g);
+      if (z.prop && MODEL_MAP[z.prop]) {
+        try {
+          const src = await loadGLB(MODEL_MAP[z.prop]);
+          const m = prepModel(src.clone(true), z.pscale || 2.0, z.tint, z.prop);
+          m.position.set(g.position.x, 0, g.position.z - 2.0);
+          m.rotation.y = (i % 2 ? 0.45 : -0.45);
+          self.group.add(m);
+        } catch (e) {}
+      }
+      if (z.sun) {
+        const sun = new THREE.Mesh(new THREE.SphereGeometry(0.42, 16, 12), new THREE.MeshBasicMaterial({ color: 0xffe066 }));
+        sun.position.set(g.position.x, 3.0, g.position.z - 2.0); self.group.add(sun);
+        const halo = new THREE.Mesh(new THREE.SphereGeometry(0.78, 16, 12), new THREE.MeshBasicMaterial({ color: 0xfff3b0, transparent: true, opacity: 0.22 }));
+        halo.position.copy(sun.position); self.group.add(halo);
+      }
+      if (z.leaves) {
+        for (let k = 0; k < 8; k++) {
+          const lf = new THREE.Mesh(new THREE.PlaneGeometry(0.22, 0.22), new THREE.MeshStandardMaterial({ color: [0xd98b3a, 0xc0702a, 0xe0a84a][k % 3], roughness: 0.9, side: THREE.DoubleSide }));
+          lf.rotation.x = -Math.PI / 2; lf.rotation.z = Math.random() * 6.28;
+          lf.position.set(g.position.x + (Math.random() - 0.5) * 2.4, 0.02, g.position.z + 0.6 + (Math.random() - 0.5) * 1.6);
+          self.group.add(lf);
+        }
+      }
+      if (z.snow) {
+        const patch = new THREE.Mesh(new THREE.CircleGeometry(1.35, 20), new THREE.MeshStandardMaterial({ color: 0xf2f7fb, roughness: 0.95 }));
+        patch.rotation.x = -Math.PI / 2; patch.position.set(g.position.x, 0.012, g.position.z + 0.3); patch.receiveShadow = true; self.group.add(patch);
+      }
+    }
+    const n = d.items.length, per = d.perRow || 5;
+    for (let i = 0; i < n; i++) {
+      const it = d.items[i];
+      const g = new THREE.Group();
+      const row = Math.floor(i / per), col = i % per;
+      const cols = Math.min(per, n - row * per);
+      g.position.set((col - (cols - 1) / 2) * 2.0, 0.5, 2.3 + row * 1.7);
+      const body = await makeVisual(it); g.add(body); g.userData.body = body;
+      const lab = makeLabel(it.label, '#eafff2'); lab.position.set(0, 0.95, 0); g.add(lab);
+      g.userData.blob = addBlob(g, 1.3);
+      settleGroup(g);
+      g.userData.blob.position.y = 0.015 - g.position.y;
+      g.userData.item = it; g.userData.home = g.position.clone();
+      self.group.add(g); self.draggables.push(g);
+    }
+    if (d.plate) { const pl = new THREE.Mesh(new THREE.CylinderGeometry(4.2, 4.2, 0.1, 32), new THREE.MeshStandardMaterial({ color: 0xf2efe6, roughness: 0.35 })); pl.position.set(0, 0.05, (d.zoneZ === undefined ? -1.4 : d.zoneZ)); pl.receiveShadow = true; self.group.add(pl); }
+    this.total = n; app.setProgress(0, n);
+  }
+  pickDown(ray) {
+    const hits = ray.intersectObjects(this.draggables, true);
+    if (!hits.length) return;
+    let o = hits[0].object; while (o && !o.userData.item && o.parent) o = o.parent;
+    if (!o || !o.userData.item) return;
+    this.drag = o; o.userData.dragY = o.position.y + 0.25;
+    this.plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -o.userData.dragY);
+    o.userData.off = hits[0].point.clone().sub(o.position); o.userData.off.y = 0;
+  }
+  pickMove(ray) {
+    if (!this.drag) return;
+    const p = new THREE.Vector3();
+    if (ray.ray.intersectPlane(this.plane, p)) {
+      p.sub(this.drag.userData.off); p.y = this.drag.userData.dragY; this.drag.position.copy(p);
+      if (this.drag.userData.blob) this.drag.userData.blob.position.y = 0.015 - this.drag.position.y;
+    }
+  }
+  pickUp(ray) {
+    if (!this.drag) return;
+    const g = this.drag; this.drag = null;
+    const hits = ray.intersectObjects(this.zones, true);
+    let zone = null;
+    if (hits.length) { let o = hits[0].object; while (o && !o.userData.zone && o.parent) o = o.parent; zone = o; }
+    if (!zone) {
+      let best = null, bestD = 1e9;
+      for (const z of this.zones) {
+        const dx = g.position.x - z.position.x, dz = g.position.z - z.position.z;
+        const d = Math.sqrt(dx * dx + dz * dz);
+        const rad = (z.userData.dropRadius || 1.35) * 1.10;
+        if (d < rad && d < bestD) { best = z; bestD = d; }
+      }
+      zone = best;
+    }
+    if (zone && zone.userData.accept === g.userData.item.zone) {
+      const k = zone.userData.count; zone.userData.count = k + 1;
+      const sx = zone.userData.spreadX || 0.85, sz = zone.userData.spreadZ || 0.7;
+      const tx = zone.position.x + ((k % 2) - 0.5) * sx;
+      const tz = zone.position.z + (Math.floor(k / 2) - 0.35) * sz;
+      g.position.set(tx, g.position.y, tz);
+      settleGroup(g); g.userData.placed = true;
+      if (g.userData.blob) g.userData.blob.position.y = 0.015 - g.position.y;
+      this.draggables.splice(this.draggables.indexOf(g), 1);
+      this.correct++; this.award(10);
+      if (this.correct >= this.total) this.finish();
+    } else {
+      g.position.copy(g.userData.home);
+      settleGroup(g);
+      if (g.userData.blob) g.userData.blob.position.y = 0.015 - g.position.y;
+      this.award(-5);
+      app.toast(zone ? 'Yanlış bölge — tekrar dene' : 'Bir bölgeye bırak');
+    }
+  }
+}
+
+// tap to pick targets
+function setGlow(obj, on, hex) {
+  obj.traverse(function (o) {
+    if (!o.isMesh) return;
+    if (!o.userData.baseMat) o.userData.baseMat = o.material;
+    if (!on) { o.material = o.userData.baseMat; return; }
+    if (!o.userData.glowMat) {
+      var mats = Array.isArray(o.userData.baseMat) ? o.userData.baseMat : [o.userData.baseMat];
+      var out = [];
+      for (var i = 0; i < mats.length; i++) { var c = mats[i].clone(); c.emissiveIntensity = 0.55; out.push(c); }
+      o.userData.glowMat = Array.isArray(o.userData.baseMat) ? out : out[0];
+    }
+    var gm = o.userData.glowMat;
+    (Array.isArray(gm) ? gm : [gm]).forEach(function (mm) { mm.emissive.setHex(hex === undefined ? 0x2f7d4f : hex); mm.emissiveIntensity = 0.55; });
+    o.material = gm;
+  });
+}
+
+class TapPick extends Level {
+  async build() {
+    const d = this.def, self = this;
+    const n = d.items.length, per = d.perRow || 3;
+    for (let i = 0; i < n; i++) {
+      const it = d.items[i];
+      const g = new THREE.Group();
+      const row = Math.floor(i / per), col = i % per;
+      const cols = Math.min(per, n - row * per);
+      g.position.set((col - (cols - 1) / 2) * 3.1, 0.5, 1.4 + row * 2.7);
+      const body = await makeVisual(it); g.add(body); g.userData.body = body;
+      const lab = makeLabel(it.label, '#eafff2'); lab.position.set(0, 1.0, 0); g.add(lab);
+      addBlob(g, 1.5); settleGroup(g);
+      g.userData.item = it; g.userData.picked = false;
+      self.group.add(g); self.draggables.push(g);
+    }
+    this.need = d.items.filter(function (x) { return x.ok; }).length;
+    this.found = 0; this.bad = 0;
+    this.total = this.need; app.setProgress(0, this.need);
+  }
+  pickDown(ray) {
+    const hits = ray.intersectObjects(this.draggables, true);
+    if (!hits.length) return;
+    let o = hits[0].object; while (o && !o.userData.item && o.parent) o = o.parent;
+    if (!o || !o.userData.item || o.userData.picked) return;
+    o.userData.picked = true;
+    if (o.userData.item.ok) {
+      setGlow(o.userData.body, true, 0x2f7d4f);
+      o.scale.setScalar(1.08);
+      this.found++; this.award(10);
+      if (this.found >= this.need) this.finish();
+    } else {
+      setGlow(o.userData.body, true, 0x7d2f2f);
+      o.scale.setScalar(0.92);
+      this.award(-5);
+      app.toast('Bu doğru değil');
+      setTimeout(function () { if (o) o.scale.setScalar(1.0); }, 250);
+    }
+  }
+}
+
+// sequence
+class SequenceLevel extends Level {
+  async build() {
+    const d = this.def, self = this;
+    const n = d.steps.length;
+    for (let i = 0; i < n; i++) {
+      const st = d.steps[i];
+      const g = new THREE.Group();
+      g.position.set((i - (n - 1) / 2) * 2.2, 0.5, 1.2);
+      const body = await makeVisual(st); g.add(body); g.userData.body = body;
+      const lab = makeLabel(st.label, '#eafff2'); lab.position.set(0, 1.0, 0); g.add(lab);
+      addBlob(g, 1.5); settleGroup(g); g.userData.baseY = g.position.y;
+      g.userData.step = st; g.userData.order = i; g.userData.txt = st.label;
+      self.group.add(g); self.draggables.push(g);
+    }
+    // correct order is provided by st.order
+    const xs = this.draggables.map(function (g) { return g.position.x; });
+    for (let si = xs.length - 1; si > 0; si--) { const sj = Math.floor(Math.random() * (si + 1)); const t = xs[si]; xs[si] = xs[sj]; xs[sj] = t; }
+    this.draggables.forEach(function (g, si) { g.position.x = xs[si]; });
+    this.expected = d.steps.slice().sort(function (a, b) { return a.order - b.order; });
+    this.idx = 0; this.total = n; app.setProgress(0, n);
+  }
+  pickDown(ray) {
+    const hits = ray.intersectObjects(this.draggables, true);
+    if (!hits.length) return;
+    let o = hits[0].object; while (o && !o.userData.step && o.parent) o = o.parent;
+    if (!o || !o.userData.step) return;
+    const want = this.expected[this.idx];
+    if (o.userData.txt === want.label) {
+      setGlow(o.userData.body, true, 0x2f7d4f);
+      o.position.y = o.userData.baseY + 0.25;
+      this.idx++; this.award(10);
+      if (this.idx >= this.total) this.finish();
+    } else {
+      this.award(-5);
+      app.toast('Sıra yanlış — baştan');
+      this.idx = 0; app.setProgress(0, this.total, this.score);
+      this.draggables.forEach(function (g) { setGlow(g.userData.body, false); g.position.y = g.userData.baseY; });
+    }
+  }
+}
+
+// DOM shop (budget / canteen)
+function makeStall() {
+  const g = new THREE.Group();
+  const wood = new THREE.MeshStandardMaterial({ color: 0x8a6a44, roughness: 0.8 });
+  const cloth = new THREE.MeshStandardMaterial({ color: 0xc94f4f, roughness: 0.9, side: THREE.DoubleSide });
+  for (const sx of [-4, 4]) for (const sz of [-3, 3]) {
+    const p = new THREE.Mesh(new THREE.BoxGeometry(0.35, 5.2, 0.35), wood);
+    p.position.set(sx, 2.6, sz); p.castShadow = true; g.add(p);
+  }
+  const top = new THREE.Mesh(new THREE.BoxGeometry(9.2, 0.3, 6.6), wood);
+  top.position.set(0, 5.2, 0); top.castShadow = true; g.add(top);
+  const canopy = new THREE.Mesh(new THREE.BoxGeometry(9.6, 0.15, 7.0), cloth);
+  canopy.position.set(0, 5.45, 0); canopy.rotation.x = -0.12; g.add(canopy);
+  const counter = new THREE.Mesh(new THREE.BoxGeometry(8.4, 0.25, 2.2), wood);
+  counter.position.set(0, 2.2, 1.6); counter.castShadow = true; g.add(counter);
+  return g;
+}
+
+class ShopLevel extends Level {
+  async build() {
+    const d = this.def, self = this;
+    // simple 3D backdrop shelves
+    if (d.stall && MODEL_MAP['stall']) {
+      try {
+        const st = await loadGLB(MODEL_MAP['stall']);
+        const cl = st.clone(true);
+        const kill = [];
+        cl.traverse(function (o) { if (o.isMesh && o.material && o.material.name === 'ground') kill.push(o); });
+        kill.forEach(function (o) { if (o.parent) o.parent.remove(o); });
+        const sm = prepModel(cl, 11.0, null, 'stall');
+        sm.position.set(0, 0, -2.5);
+        self.group.add(sm);
+      } catch (err) { console.warn('stall yuklenemedi', err); }
+    }
+    if (this.group.children.length === 0) { const fs2 = makeStall(); fs2.position.set(0, 0, -2.5); this.group.add(fs2); }
+    if (!d.stall) { for (let ti = 0; ti < 3; ti++) { const tb = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.18, 1.6), pbr('wood', 3)); tb.position.set(0, 1.1, -2.2 - ti * 2.2); tb.castShadow = true; self.group.add(tb); const lg = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.1, 0.16), pbr('wood', 3)); lg.position.set(-1.9, 0.55, -2.2 - ti * 2.2); self.group.add(lg); const rg = new THREE.Mesh(new THREE.BoxGeometry(0.16, 1.1, 0.16), pbr('wood', 3)); rg.position.set(1.9, 0.55, -2.2 - ti * 2.2); self.group.add(rg); } }
+    this.camOverride = { pos: [0, 7.5, 16], target: [0, 3.0, -2.0] };
+    const el = document.getElementById('shop');
+    el.classList.remove('hidden');
+    el.innerHTML = '';
+    const row = document.createElement('div'); row.className = 'row';
+    self.sel = {};
+    d.items.forEach(function (it) {
+      const b = document.createElement('div'); b.className = 'it';
+      b.innerHTML = it.label + '<br><b>' + it.price + ' TL</b>';
+      b.onclick = function () { self.toggle(it, b); };
+      b.dataset.id = it.id; row.appendChild(b);
+    });
+    el.appendChild(row);
+    const bar = document.createElement('div'); bar.className = 'bar';
+    const info = document.createElement('div'); info.id = 'shopInfo';
+    const go = document.createElement('button'); go.className = 'go'; go.textContent = 'Sepeti Tamamla';
+    go.onclick = function () { self.check(); };
+    bar.appendChild(info); bar.appendChild(go); el.appendChild(bar);
+    self.info = info; self.total = 0; self.updateInfo();
+  }
+  toggle(it, btn) {
+    if (this.sel[it.id]) { delete this.sel[it.id]; btn.classList.remove('on'); }
+    else { this.sel[it.id] = true; btn.classList.add('on'); }
+    this.updateInfo();
+  }
+  updateInfo() {
+    let total = 0, veg = 0, fruit = 0, prot = 0, treats = 0;
+    const d = this.def;
+    for (const id in this.sel) {
+      const it = d.items.find(function (x) { return x.id === id; });
+      total += it.price;
+      if (it.tag === 'veg') veg++; if (it.tag === 'fruit') fruit++; if (it.tag === 'prot') prot++; if (it.tag === 'treat') treats++;
+    }
+    this.info.innerHTML = 'Toplam: <b>' + total + '</b> / ' + d.budget + ' TL';
+    this._sum = { total: total, veg: veg, fruit: fruit, prot: prot, treats: treats };
+  }
+  check() {
+    const s = this._sum, d = this.def;
+    if (s.total > d.budget) { app.toast('Bütçeyi aştın!'); return; }
+    if (s.treats > (d.maxTreats || 0)) { app.toast('Çok fazla abur cubur'); return; }
+    if (s.veg < (d.needVeg || 0)) { app.toast('Sebze ekle'); return; }
+    if (s.prot < (d.needProt || 0)) { app.toast('Protein ekle'); return; }
+    if (s.total < d.minSpend) { app.toast('Sepet çok küçük'); return; }
+    document.getElementById('shop').classList.add('hidden');
+    this.finish();
+  }
+  dispose() { document.getElementById('shop').classList.add('hidden'); super.dispose(); }
+}
+
+// ---------------- levels data ----------------
+const LEVELS = [
+  { id: 1, title: 'Bitkisel Protein Kaşifi', ico: '🫘', desc: 'Bitkisel ve hayvansal proteini ayır.', msg: 'Baklagiller bitkisel proteinin en sürdürülebilir kaynağıdır: su ve karbon ayak izi düşüktür.', cls: DragSort,
+    zoneGap: 3.2,
+    zones: [ { id: 'bitkisel', label: 'Bitkisel Protein', color: 0x2f7d4f }, { id: 'hayvansal', label: 'Hayvansal Protein', color: 0xb5651d } ],
+    items: [
+      { label: 'Mercimek', zone: 'bitkisel', shape: 'ico', color: 0x9bbf4a },
+      { label: 'Nohut', zone: 'bitkisel', shape: 'ico', color: 0xd8b871 },
+      { label: 'Fasulye', zone: 'bitkisel', shape: 'box', color: 0x8a5a2b },
+      { label: 'Et', zone: 'hayvansal', shape: 'ico', color: 0xa8323c },
+      { label: 'Yumurta', zone: 'hayvansal', shape: 'sphere', color: 0xf2e6c8 }
+    ] },
+  { id: 2, title: 'Mevsim Dedektifi', ico: '🍂', desc: 'Meyve-sebzeyi doğru mevsime bırak.', msg: 'Mevsiminde tüketmek, serada ısıtma ve uzun nakliyeyi azaltır; enerji tasarrufu sağlar.', cls: DragSort,
+    zoneGap: 2.5, perRow: 4,
+    zones: [ { id: 'ilkbahar', label: 'İlkbahar', color: 0x7bc47f }, { id: 'yaz', label: 'Yaz', color: 0xf2c14e }, { id: 'sonbahar', label: 'Sonbahar', color: 0xc97b3a }, { id: 'kis', label: 'Kış', color: 0x6fa8dc } ],
+    items: [
+      { label: 'Çilek', zone: 'ilkbahar', shape: 'ico', color: 0xd94f6a },
+      { label: 'Enginar', zone: 'ilkbahar', shape: 'ico', color: 0x6f8f4a },
+      { label: 'Karpuz', zone: 'yaz', shape: 'sphere', color: 0xd23b3b },
+      { label: 'Domates', zone: 'yaz', shape: 'sphere', color: 0xd14b2a },
+      { label: 'Elma', zone: 'sonbahar', shape: 'sphere', color: 0xc0392b },
+      { label: 'Üzüm', zone: 'sonbahar', shape: 'ico', color: 0x6b2d6b },
+      { label: 'Portakal', zone: 'kis', shape: 'sphere', color: 0xe08a1e },
+      { label: 'Ispanak', zone: 'kis', shape: 'ico', color: 0x3f6b3a }
+    ] },
+  { id: 3, title: 'Yerel Ürün Avcısı', ico: '🧺', desc: 'Pazardan yerel üretilenleri seç.', msg: 'Yerel ürün kısa yoldan gelir: daha az nakliye, daha az emisyon ve daha taze gıda.', cls: TapPick,
+    items: [
+      { label: 'Domates · Yerel', ok: true, shape: 'sphere', color: 0xd14b2a },
+      { label: 'Salatalık · Yerel', ok: true, shape: 'cyl', color: 0x4f8f3a },
+      { label: 'Biber · Yerel', ok: true, shape: 'cone', color: 0x2f7d3a },
+      { label: 'Avokado · İthal', ok: false, shape: 'sphere', color: 0x3f5a20, model: 'avocado', h: 0.85 },
+      { label: 'Muz · İthal', ok: false, shape: 'cyl', color: 0xe0c341 },
+      { label: 'Kivi · İthal', ok: false, shape: 'sphere', color: 0x7a8f3a }
+    ] },
+  { id: 4, title: 'Besinin Yolculuğu', ico: '🚚', desc: 'Tarla→sofrayı doğru sırala.', msg: 'Kısa tedarik zinciri gıda kaybını ve nakliye kaynaklı karbonu azaltır.', cls: SequenceLevel,
+    steps: [
+      { label: 'Tarla', order: 0, shape: 'box', color: 0x6b8f3a },
+      { label: 'Hasat', order: 1, shape: 'ico', color: 0xc9a227 },
+      { label: 'Depo', order: 2, shape: 'box', color: 0x8a6b4a },
+      { label: 'Nakliye', order: 3, shape: 'cyl', color: 0x5a7fa8 },
+      { label: 'Market', order: 4, shape: 'box', color: 0x2f7d4f },
+      { label: 'Sofra', order: 5, shape: 'cyl', color: 0xd8b871 }
+    ] },
+  { id: 5, title: 'Biyoçeşitlilik Kaşifi', ico: '🌱', desc: 'Tahıl, baklagil ve sebzeyi ayır.', msg: 'Çeşitlilik ekosistemi güçlendirir; tek türe bağlı kalmak riski artırır.', cls: DragSort,
+    zoneGap: 2.8,
+    zones: [ { id: 'tahil', label: 'Tahıl', color: 0xc9a227 }, { id: 'baklagil', label: 'Baklagil', color: 0x2f7d4f }, { id: 'sebze', label: 'Sebze', color: 0x4f8f3a } ],
+    items: [
+      { label: 'Buğday', zone: 'tahil', shape: 'cyl', color: 0xd8b871 },
+      { label: 'Arpa', zone: 'tahil', shape: 'cyl', color: 0xc9a227 },
+      { label: 'Mercimek', zone: 'baklagil', shape: 'ico', color: 0x9bbf4a },
+      { label: 'Nohut', zone: 'baklagil', shape: 'ico', color: 0xd8b871 },
+      { label: 'Domates', zone: 'sebze', shape: 'sphere', color: 0xd14b2a },
+      { label: 'Biber', zone: 'sebze', shape: 'cone', color: 0x2f7d3a }
+    ] },
+  { id: 6, title: 'Bütçe Uzmanı', ico: '💰', desc: '200 TL ile dengeli sepet kur.', msg: 'Besleyici gıda her zaman pahalı değildir; baklagil ve mevsim sebzesi bütçe dostudur.', cls: ShopLevel,
+    budget: 200, minSpend: 120, needVeg: 1, needProt: 1, maxTreats: 0,
+    items: [
+      { id: 'ekmek', label: 'Tam Buğday Ekmeği', price: 20, tag: 'carb' },
+      { id: 'mercimek', label: 'Mercimek', price: 25, tag: 'prot' },
+      { id: 'sebze', label: 'Mevsim Sebzesi', price: 30, tag: 'veg' },
+      { id: 'elma', label: 'Elma', price: 20, tag: 'fruit' },
+      { id: 'sut', label: 'Süt', price: 25, tag: 'prot' },
+      { id: 'tavuk', label: 'Tavuk', price: 60, tag: 'prot' },
+      { id: 'cips', label: 'Cips', price: 15, tag: 'treat' },
+      { id: 'kola', label: 'Kola', price: 15, tag: 'treat' },
+      { id: 'dondurma', label: 'Dondurma', price: 20, tag: 'treat' }
+    ] },
+  { id: 7, title: 'Ambalaj Dedektifi', ico: '♻️', desc: 'Ambalajı doğru kutuya ayır.', msg: 'Doğru ayrıştırma geri dönüşümü mümkün kılar; gereksiz ambalajdan kaçınmak en iyisidir.', cls: DragSort,
+    zoneGap: 2.4,
+    zones: [ { id: 'plastik', label: 'Plastik', color: 0x3f7fa8 }, { id: 'karton', label: 'Karton', color: 0xb58b4a }, { id: 'cam', label: 'Cam', color: 0x7fbf9f }, { id: 'gereksiz', label: 'Gereksiz', color: 0x9a5a5a } ],
+    items: [
+      { label: 'Su Şişesi', zone: 'plastik', shape: 'cyl', color: 0x6fa8dc },
+      { label: 'Süt Kutusu', zone: 'karton', shape: 'box', color: 0xd8b871 },
+      { label: 'Cam Kavanoz', zone: 'cam', shape: 'cyl', color: 0x9fd7c8 },
+      { label: 'Naylon Poşet', zone: 'plastik', shape: 'box', color: 0xc0c0c0 },
+      { label: 'Pipet', zone: 'gereksiz', shape: 'cyl', color: 0xd94f6a }
+    ] },
+  { id: 8, title: 'İsraf Dedektifi', ico: '🧊', desc: 'Bozuk/fazla besinleri bul.', msg: 'Gıda israfı, boşa giden su ve emeğin en büyük kaynağıdır; planlı alışverişle azalır.', cls: TapPick,
+    items: [
+      { label: 'Çürük Domates', ok: true, shape: 'sphere', color: 0x7a3a2a },
+      { label: 'Tarihi Geçmiş Yoğurt', ok: true, shape: 'cyl', color: 0xd8d8c8 },
+      { label: 'Unutulmuş Marul', ok: true, shape: 'ico', color: 0x8a8f3a },
+      { label: 'Taze Ekmek', ok: false, shape: 'box', color: 0xd8b871 },
+      { label: 'Yeni Süt', ok: false, shape: 'box', color: 0xeff0ff }
+    ] },
+  { id: 9, title: 'Gıda Kurtarıcısı', ico: '🍲', desc: 'Artanlardan güvenli öğün kur.', msg: 'Artan yemekleri güvenli şekilde değerlendirmek israfı azaltır; küflü ve çiğ riskli gıdayı kullanma.', cls: TapPick,
+    items: [
+      { label: 'Bayat Ekmek', ok: true, shape: 'box', color: 0xcfae72 },
+      { label: 'Domates', ok: true, shape: 'sphere', color: 0xd14b2a },
+      { label: 'Peynir', ok: true, shape: 'box', color: 0xf2e6a8 },
+      { label: 'Küflü Ekmek', ok: false, shape: 'box', color: 0x5a6b3a },
+      { label: 'Çiğ Tavuk', ok: false, shape: 'ico', color: 0xd8a0a0 },
+      { label: 'Bozuk Süt', ok: false, shape: 'box', color: 0xc8c8b0 }
+    ] },
+  { id: 10, title: 'Sürdürülebilir Tabak', ico: '🍽️', desc: 'Dengeli tabağı doldur.', msg: 'Tabakta sebze, meyve, baklagil ve tam tahıl dengesi hem sağlıklı hem düşük karbonludur.', cls: DragSort,
+    zoneGap: 2.4,
+    zones: [ { id: 'sebze', label: 'Sebze', color: 0x4f8f3a }, { id: 'meyve', label: 'Meyve', color: 0xd94f6a }, { id: 'baklagil', label: 'Baklagil', color: 0xc9a227 }, { id: 'tahil', label: 'Tam Tahıl', color: 0xb58b4a } ],
+    items: [
+      { label: 'Brokoli', zone: 'sebze', shape: 'ico', color: 0x3f7d3a },
+      { label: 'Elma', zone: 'meyve', shape: 'sphere', color: 0xc0392b },
+      { label: 'Mercimek', zone: 'baklagil', shape: 'ico', color: 0x9bbf4a },
+      { label: 'Bulgur', zone: 'tahil', shape: 'cyl', color: 0xd8b871 }
+    ] },
+  { id: 11, title: 'Sürdürülebilir Kantin', ico: '🥗', desc: 'Menüyü dengeli ve yeşil kur.', msg: 'Kantin menüsünde bitkisel ağırlık ve mevsim ürünü, okulun karbon ayak izini düşürür.', cls: ShopLevel,
+    budget: 120, minSpend: 60, needVeg: 1, needProt: 1, maxTreats: 1,
+    items: [
+      { id: 'salata', label: 'Mevsim Salata', price: 20, tag: 'veg' },
+      { id: 'sandvic', label: 'Tavuklu Sandviç', price: 45, tag: 'prot' },
+      { id: 'corba', label: 'Mercimek Çorbası', price: 25, tag: 'prot' },
+      { id: 'meyve', label: 'Meyve', price: 15, tag: 'fruit' },
+      { id: 'kek', label: 'Kek', price: 20, tag: 'treat' },
+      { id: 'kola', label: 'Kola', price: 15, tag: 'treat' }
+    ] },
+  { id: 12, title: 'Su Tasarrufu Dedektifi', ico: '💧', desc: 'En tasarruflu sulamayı seç.', msg: 'Damlama sulama, salma sulamaya göre %40-60 su tasarrufu sağlar; sanal su ayak izini düşürür.', cls: TapPick,
+    items: [
+      { label: 'Salma Sulama', ok: false, shape: 'box', color: 0x6fa8dc },
+      { label: 'Yağmurlama', ok: false, shape: 'cone', color: 0x9fd7ff },
+      { label: 'Damlama Sulama', ok: true, shape: 'cyl', color: 0x2f7d4f }
+    ] }
+];
+
+LEVELS[0] = { id: 1, title: 'Gıda Grupları', ico: '🧺', desc: 'Bitkisel ve hayvansal gıdaları sepetlere ayır.', msg: 'Bitkisel gıdalar genelde daha düşük karbon ve su ayak izine sahiptir; tabağını çeşitlendir.', cls: DragSort,
+  zoneGap: 3.6,
+  zones: [ { id: 'bitkisel', label: 'Bitkisel', color: 0x9a8a4a, shape: 'basket' }, { id: 'hayvansal', label: 'Hayvansal', color: 0x8a6a3a, shape: 'basket' } ],
+  items: [
+    { label: 'Brokoli', zone: 'bitkisel', shape: 'ico', color: 0x3f7d3a },
+    { label: 'Havuç', zone: 'bitkisel', shape: 'cone', color: 0xe07a1f },
+    { label: 'Domates', zone: 'bitkisel', shape: 'sphere', color: 0xd14b2a },
+    { label: 'Elma', zone: 'bitkisel', shape: 'sphere', color: 0xc0392b },
+    { label: 'Et', zone: 'hayvansal', shape: 'ico', color: 0xa8323c },
+    { label: 'Süt', zone: 'hayvansal', shape: 'box', color: 0xf0f0ff },
+    { label: 'Yumurta', zone: 'hayvansal', shape: 'sphere', color: 0xf2e6c8 },
+    { label: 'Tavuk', zone: 'hayvansal', shape: 'ico', color: 0xc98a5a }
+  ] };
+
+LEVELS[1] = { id: 2, title: 'Mevsim Dedektifi', ico: '🍂', desc: 'Meyve-sebzeyi doğru mevsime bırak.', msg: 'Mevsiminde tüketmek serada ısıtmayı ve uzun nakliyeyi azaltır.', cls: DragSort,
+  zoneGap: 2.6, perRow: 4, zoneZ: -2.2,
+  zones: [ { id: 'ilkbahar', label: 'İlkbahar', color: 0xf2a8c0, prop: 'bg_birch_pink', tint: 0xf2a8c0, pscale: 2.2 }, { id: 'yaz', label: 'Yaz', color: 0xf2c14e, prop: 'bg_tree', tint: 0x4f9a3a, pscale: 2.3, sun: true }, { id: 'sonbahar', label: 'Sonbahar', color: 0xc97b3a, prop: 'bg_tree_autumn', tint: 0xd98b3a, pscale: 2.2, leaves: true }, { id: 'kis', label: 'Kış', color: 0x6fa8dc, prop: 'bg_tree_bare', tint: 0x9aa8b4, pscale: 2.2, snow: true } ],
+  items: [
+    { label: 'Marul', zone: 'ilkbahar', shape: 'ico', color: 0x6f9f4a },
+    { label: 'Çilek', zone: 'ilkbahar', shape: 'cone', color: 0xd94f6a },
+    { label: 'Karpuz', zone: 'yaz', shape: 'sphere', color: 0xd23b3b },
+    { label: 'Domates', zone: 'yaz', shape: 'sphere', color: 0xd14b2a },
+    { label: 'Elma', zone: 'sonbahar', shape: 'sphere', color: 0xc0392b },
+    { label: 'Balkabağı', zone: 'sonbahar', shape: 'sphere', color: 0xe08a1e },
+    { label: 'Portakal', zone: 'kis', shape: 'sphere', color: 0xe08a1e },
+    { label: 'Mantar', zone: 'kis', shape: 'ico', color: 0x9a7a5a }
+  ] };
+
+LEVELS[2] = { id: 3, title: 'Yerel Ürün Avcısı', ico: '🧺', desc: 'Yerel üretilenleri seç.', msg: 'Yerel ürün kısa yoldan gelir: daha az nakliye, daha az emisyon.', cls: TapPick,
+  items: [
+    { label: 'Domates · Yerel', ok: true, shape: 'sphere', color: 0xd14b2a },
+    { label: 'Biber · Yerel', ok: true, shape: 'cone', color: 0x2f7d3a },
+    { label: 'Marul · Yerel', ok: true, shape: 'ico', color: 0x6f9f4a },
+    { label: 'Muz · İthal', ok: false, shape: 'cyl', color: 0xe0c341 },
+    { label: 'Hindistan Cevizi · İthal', ok: false, shape: 'sphere', color: 0x6b4a2f },
+    { label: 'Avokado · İthal', ok: false, shape: 'sphere', color: 0x3f5a20 }
+  ] };
+
+LEVELS[6] = { id: 7, title: 'Ambalaj Dedektifi', ico: '♻️', desc: 'Gıda ambalajını doğru kutuya ayır.', msg: 'Doğru ayrıştırma geri dönüşümü mümkün kılar; ambalajı azaltmak en iyisidir.', cls: DragSort,
+  zoneGap: 2.7,
+  zones: [ { id: 'plastik', label: 'Plastik', color: 0x3f7fa8, shape: 'trash' }, { id: 'metal', label: 'Metal', color: 0x8a9298, shape: 'trash' }, { id: 'cam', label: 'Cam', color: 0x7fbf9f, shape: 'trash' }, { id: 'karton', label: 'Karton', color: 0xb58b4a, shape: 'trash' } ],
+  items: [
+    { label: 'Su Şişesi', zone: 'plastik', shape: 'cyl', color: 0x6fa8dc },
+    { label: 'Soda Kutusu', zone: 'metal', shape: 'cyl', color: 0xc0c8cf },
+    { label: 'Cam Kavanoz', zone: 'cam', shape: 'cyl', color: 0x9fd7c8 },
+    { label: 'Süt Kutusu', zone: 'karton', shape: 'box', color: 0xd8b871 }
+  ] };
+
+(function () { var k = LEVELS[1].items.find(function (x) { return x.label === 'Karpuz'; }); if (k) k.color = 0x2f7d3a; LEVELS[5].stall = true; LEVELS[9].plate = true; })();
+
+// ---------------- message + menu + start ----------------
+function showMessage(title, text, cb) {
+  const m = document.getElementById('msg');
+  document.getElementById('msgTitle').textContent = title;
+  document.getElementById('msgText').textContent = text;
+  m.classList.remove('hidden');
+  document.getElementById('msgBtn').onclick = function () { m.classList.add('hidden'); if (cb) cb(); };
+}
+
+const CHAPTERS = [
+  { name: 'Kolay', from: 1, to: 4, desc: 'Tanıma ve ayırma' },
+  { name: 'Orta', from: 5, to: 8, desc: 'Karar verme' },
+  { name: 'Zor', from: 9, to: 12, desc: 'Bütçe ve planlama' }
+];
+function buildMenu() {
+  const cont = document.getElementById('chapters'); if (!cont) return;
+  cont.innerHTML = '';
+  const done = Object.keys(save.done).length;
+  const bar = document.getElementById('progBar'); if (bar) bar.style.width = Math.round(done / 12 * 100) + '%';
+  const pt = document.getElementById('progTxt'); if (pt) pt.textContent = (done >= 12 ? 'Tüm bölümler tamam! 🏆 ' : '') + done + ' / 12 tamamlandı';
+  const cb = document.getElementById('continueBtn');
+  let next = 1;
+  while (next <= 12 && save.done[next]) next++;
+  if (next > 12) next = Math.min(save.unlocked, 12);
+  if (cb) {
+    cb.textContent = (done >= 12) ? 'Baştan Oyna →' : 'Devam Et · Bölüm ' + next + ' →';
+    cb.onclick = function () { startLevel(done >= 12 ? 1 : next); };
+  }
+  CHAPTERS.forEach(function (ch) {
+    const sec = document.createElement('section'); sec.className = 'chapter';
+    const head = document.createElement('div'); head.className = 'chaphead';
+    let cd = 0; for (let ci = ch.from; ci <= ch.to; ci++) if (save.done[ci]) cd++;
+    head.innerHTML = '<b>' + ch.name + '</b><span>' + ch.from + '–' + ch.to + ' · ' + ch.desc + '</span><span style="margin-left:auto;font-size:11px;color:#8fbfa2">' + cd + '/' + (ch.to - ch.from + 1) + '</span>';
+    sec.appendChild(head);
+    const grid = document.createElement('div'); grid.className = 'grid';
+    LEVELS.filter(function (d) { return d.id >= ch.from && d.id <= ch.to; }).forEach(function (def) {
+      const locked = def.id > save.unlocked, dn = !!save.done[def.id];
+      const c = document.createElement('div');
+      c.className = 'card' + (locked ? ' locked' : '');
+      const badge = locked ? '🔒' : (dn ? '✅' : '');
+      const best = (save.best && save.best[def.id]) ? save.best[def.id] : 0;
+      c.innerHTML = '<div class="num">BÖLÜM ' + def.id + '</div><div class="ico">' + def.ico + '</div><div class="name">' + def.title + '</div><div class="desc">' + def.desc + '</div><div class="badge">' + badge + '</div>' + (best > 0 ? '<div class="best">★ ' + best + ' p</div>' : '');
+      c.onclick = function () { if (locked) { app.toast('Önce önceki bölümü bitir'); return; } startLevel(def.id); };
+      grid.appendChild(c);
+    });
+    sec.appendChild(grid); cont.appendChild(sec);
+  });
+}
+
+const LEVEL_BG = { 1:'rockFarm',2:'rockNature',3:'market',4:'farm',5:'farm',6:'market',7:'junkyard',8:'junkyard',9:'kitchen',10:'kitchen',11:'market',12:'water' };
+const BG_TINT = { bg_grass:0x4f8f3a, bg_bush:0x4f8f3a, bg_tree:0x4f7d3a, bg_birch:0x7a9a5a, bg_rock:0x8a8a88, bg_flowers:0xd96a8a, bg_plant:0x5a8f3a, bg_pine:0x3f6b3a, bg_cactus:0x4f8f3a, bg_log:0x7a5a3a, bg_stump:0x7a5a3a, bg_willow:0x5a8f4a, bg_barn:0xa24a3a, bg_fence:0x9a7a4a, bg_silo:0x8a9298, bg_windmill:0xb08a5a, bg_coop:0x9a7a4a, bg_well:0x8a7a5a, bg_watertower:0x8a9298, bg_cow:0x6a5a4a, bg_horse:0x6a4a34, bg_fridge:0xdfe6ea, bg_oven:0x8a9298, bg_table:0x9a7a4a, bg_chair:0x9a7a4a, bg_shelf:0x9a7a4a, bg_plant2:0x4f8f3a, bg_trash:0x4f7d3a, bg_couch:0x5a7a9a, bg_door:0x9a7a4a, bg_window:0x9a7a4a, bg_kitchen:0x9a7a4a };
+const THEMES = {
+  farm: { ground:'grass', fog:0xcfe0d0, props:[['bg_tree',-9,-9,2.4],['bg_tree',9,-9,2.4],['bg_bush',-6,-7,0.9],['bg_bush',6,-7,0.9],['bg_fence',-7,-6,1.5],['bg_fence',7,-6,1.5],['bg_fence',0,-7.4,1.6],['bg_barn',-14,-12,2.8],['bg_coop',14,-10,2.1],['bg_well',12,-6,1.2],['bg_cow',-6,-9,1.2],['bg_horse',7,-10,1.3],['bg_windmill',-11,-8,2.4],['bg_rock',10,-8,0.9],['bg_tree',-16,-14,2.5],['bg_tree',16,-14,2.5]] },
+  nature: { ground:'grass', fog:0xcfe0d0, props:[['bg_tree',-9,-8,2.3],['bg_birch',9,-8,2.1],['bg_bush',-6,-7,0.8],['bg_rock',7,-7,0.8],['bg_flowers',-8,-6,0.8],['bg_pine',0,-9,2.1],['bg_log',10,-7,0.9]] },
+  market: { ground:'concrete', fog:0xe2dcc8, props:[['bg_table',-6,-7,1.4],['bg_table',0,-7,1.4],['bg_table',6,-7,1.4],['bg_table',-3,-9.5,1.3],['bg_table',3,-9.5,1.3],['bg_door',0,-11.5,1.4],['bg_door',-7,-11,1.4],['bg_door',7,-11,1.4],['bg_shelf',-9,-7,1.4],['bg_shelf',-9.5,-9.5,1.5],['bg_shelf',9.5,-9.5,1.5],['bg_kitchen',-12.5,-8,1.5],['bg_kitchen',12.5,-8,1.5],['bg_plant2',9,-7,1.1],['bg_plant2',-12,-6,1.1],['bg_plant2',12,-6,1.1]] },
+  kitchen: { ground:'tile', fog:0xe0d8c8, props:[['bg_fridge',-7,-7,1.7],['bg_oven',7,-7,1.7],['bg_table',0,-8,1.5],['bg_chair',2.4,-8,1.1],['bg_chair',-2.4,-8,1.1],['bg_shelf',-9,-6,1.5],['bg_shelf',12,-8,1.5],['bg_kitchen',-12,-6,1.5],['bg_trash',-9,-9.5,1.1],['bg_trash',9.5,-9.5,1.1],['bg_couch',-12.5,-9,1.4],['bg_window',0,-12,1.5],['bg_window',-8,-12,1.4],['bg_window',8,-12,1.4],['bg_plant2',9,-7,1.1]] },
+  water: { ground:'dirt', fog:0xcfe0e0, props:[['bg_well',-7,-7,1.4],['bg_well',0,-11,1.3],['bg_silo',7,-8,1.9],['bg_fence',-8,-6,1.4],['bg_fence',0,-7,1.5],['bg_fence',8,-6,1.4],['bg_watertower',9,-7,1.7],['bg_windmill',-10,-9,2.2],['bg_tree',-13,-10,2.3],['bg_tree',13,-10,2.3],['bg_rock',-10,-6,1.2],['bg_rock',10,-6,1.2]] },
+  rockFarm: { ground:'rock', fog:0xd8d8cf, props:[['bg_tree',-8.5,-7.5,2.2],['bg_tree',8.5,-7.5,2.2],['bg_pine',-11,-10,2.4],['bg_pine',11,-10,2.4],['bg_tree',-13.5,-6,2.4],['bg_tree',13.5,-6,2.4],['bg_pine',-15.5,-12,2.7],['bg_pine',15.5,-12,2.7],['bg_birch',-10.5,-13,2.2],['bg_birch',10.5,-13,2.2],['bg_willow',-16.5,-8,2.3],['bg_willow',16.5,-8,2.3],['bg_tree',0,-14.5,2.6],['bg_birch',-5,-12,2.1],['bg_birch',5,-12,2.1],['bg_rock',-6.5,-6,1.1],['bg_rock',6.5,-6,1.1],['bg_rock',-12.5,-7,1.3],['bg_rock',12.5,-7,1.3],['bg_bush',-9.5,-5.5,1.0],['bg_bush',9.5,-5.5,1.0],['bg_bush',-15,-5,1.0],['bg_stump',4,-8,1.0],['bg_log',-4,-9,1.1],['bg_cactus',16,-6,1.1],['bg_pine',-18,-18,2.8],['bg_pine',-9,-19,2.7],['bg_pine',0,-20,2.9],['bg_pine',9,-19,2.7],['bg_pine',18,-18,2.8],['bg_tree',-14,-15,2.5],['bg_tree',14,-15,2.5],['bg_birch',-6,-16,2.4],['bg_birch',6,-16,2.4],['bg_willow',-20,-12,2.4],['bg_willow',20,-12,2.4],['bg_tree',-12,-5.2,2.0],['bg_pine',-9,-5.4,2.2],['bg_birch',-6,-5.2,1.9],['bg_tree',-3,-5.5,2.1],['bg_pine',0,-5.2,2.3],['bg_birch',3,-5.5,1.9],['bg_tree',6,-5.2,2.0],['bg_pine',9,-5.4,2.2],['bg_tree',12,-5.2,2.0],['bg_pine',-10.5,-7.4,2.4],['bg_tree',-7.5,-7.2,2.1],['bg_birch',-4.5,-7.5,2.0],['bg_pine',-1.5,-7.2,2.4],['bg_tree',1.5,-7.4,2.1],['bg_birch',4.5,-7.2,2.0],['bg_pine',7.5,-7.5,2.4],['bg_tree',10.5,-7.2,2.1],['bg_pine',-9.5,-4,2.3],['bg_tree',-9.5,-1,2.2],['bg_birch',-9.5,2,2.1],['bg_pine',-12.5,-6,2.4],['bg_tree',-12.5,-2,2.3],['bg_willow',-12.5,1.5,2.2],['bg_pine',9.5,-4,2.3],['bg_tree',9.5,-1,2.2],['bg_birch',9.5,2,2.1],['bg_pine',12.5,-6,2.4],['bg_tree',12.5,-2,2.3],['bg_willow',12.5,1.5,2.2],['bg_pine',-14,-9.5,2.6],['bg_tree',-7,-9.5,2.3],['bg_birch',0,-9.5,2.2],['bg_tree',7,-9.5,2.3],['bg_pine',14,-9.5,2.6],['bg_pine',-11,-11.5,2.7],['bg_birch',-4,-11.5,2.3],['bg_tree',4,-11.5,2.3],['bg_pine',11,-11.5,2.7]] },
+  rockNature: { ground:'rock', fog:0xd8d8cf, props:[['bg_birch',-8.5,-7.5,2.1],['bg_tree',8.5,-7.5,2.1],['bg_pine',-11.5,-10,2.3],['bg_pine',11.5,-10,2.3],['bg_birch',-13.5,-6,2.3],['bg_tree',13.5,-6,2.3],['bg_pine',-16,-12,2.6],['bg_pine',16,-12,2.6],['bg_willow',-14,-9,2.2],['bg_willow',14,-9,2.2],['bg_tree',0,-14,2.5],['bg_birch',-5.5,-12,2.0],['bg_birch',5.5,-12,2.0],['bg_flowers',-9,-5.5,0.9],['bg_flowers',9,-5.5,0.9],['bg_flowers',0,-9,0.9],['bg_rock',-7,-6,1.2],['bg_rock',7,-6,1.2],['bg_rock',-13,-7,1.4],['bg_rock',13,-7,1.4],['bg_bush',-10,-8,0.9],['bg_log',5,-8.5,1.1],['bg_stump',-6,-9,1.0],['bg_pine',-18,-18,2.8],['bg_pine',-9,-19,2.7],['bg_pine',0,-20,2.9],['bg_pine',9,-19,2.7],['bg_pine',18,-18,2.8],['bg_birch',-13,-15,2.4],['bg_birch',13,-15,2.4],['bg_tree',-5,-17,2.5],['bg_tree',5,-17,2.5],['bg_willow',-20,-12,2.3],['bg_willow',20,-12,2.3]] }
+};
+THEMES.junkyard = { ground: 'rubber', fog: 0xc9c9c0, props: [['bg_trash',-6.5,-6,1.2],['bg_trash',6.5,-6,1.2],['bg_trash',-9.5,-7.5,1.3],['bg_trash',9.5,-7.5,1.3],['junk1',-11,-8,1.6],['junk2',-8,-8.5,1.4],['junk3',-5,-9,1.3],['junk4',0,-10,1.9],['junk5',5,-9,1.3],['junk6',8,-8.5,1.4],['junk7',11,-8,1.6],['junk8',-13,-9,1.5],['junk2',13,-9,1.4],['junk4',-3,-6.5,1.2],['junk6',3,-6.5,1.2],['junk1',-15.5,-7,1.4],['junk7',15.5,-7,1.4],['bg_rock',-10,-5.5,0.9],['bg_rock',10,-5.5,0.9],['bg_stump',-10,-6,1.0],['bg_log',10,-6.5,1.1]] };
+THEMES.kitchen.props.push(['plate', -2.2, -7.2, 0.9], ['bowl', 2.2, -7.2, 0.9], ['plate', 0, -9.0, 0.8]);
+THEMES.water.props.push(['bg_tree', -14, -12, 2.4], ['bg_tree', 14, -12, 2.4], ['bg_rock', -6, -10, 1.1], ['bg_rock', 6, -10, 1.1]);
+async function applyBackground(def) {
+  const theme = THEMES[LEVEL_BG[def.id]] || THEMES.farm;
+  if (app.bgGroup) { scene.remove(app.bgGroup); app.bgGroup.traverse(function (o) { if (!o.userData || !o.userData.glb) { if (o.geometry) o.geometry.dispose(); } }); app.bgGroup = null; }
+  app.bgGroup = new THREE.Group();
+  scene.add(app.bgGroup);
+  if (theme.ground === 'rubber') ground.material = rubberMaterial(10);
+  else ground.material = rockMaterial(9);
+  scene.fog.color.set(theme.fog);
+  if (LEVEL_BG[def.id] === 'water') { const pond = new THREE.Mesh(new THREE.CircleGeometry(5.2, 28), new THREE.MeshStandardMaterial({ color: 0x2f7fa8, roughness: 0.15, metalness: 0.1, transparent: true, opacity: 0.85 })); pond.rotation.x = -Math.PI / 2; pond.position.set(0, 0.03, -6.5); app.bgGroup.add(pond); }
+  for (const p of theme.props) {
+    const key = p[0]; if (!MODEL_MAP[key]) continue;
+    try { const src = await loadGLB(MODEL_MAP[key]); const m = prepModel(src.clone(true), p[3] || 1.5, BG_TINT[key] || 0x9a8a6a, key); m.position.set(p[1], 0, p[2]); app.bgGroup.add(m); } catch (e) {}
+  }
+}
+async function startLevel(id) {
+  const def = LEVELS.find(function (d) { return d.id === id; });
+  if (!def) return;
+  if (app.current) { app.current.dispose(); app.current = null; }
+  document.getElementById('menu').classList.add('hidden');
+  document.getElementById('hud').classList.remove('hidden');
+  document.getElementById('hudTitle').innerHTML = '<div>Bölüm ' + def.id + ' · ' + def.title + '</div><div class="goal">' + def.desc + '</div>';
+  const lvl = new def.cls(def);
+  app.current = lvl;
+  showLoading(true, 'Bölüm yükleniyor…');
+  await ensureManifest();
+  await applyBackground(def);
+  try { await lvl.build(); } catch (e) { console.warn(e); }
+  showLoading(false);
+  frameCamera(lvl);
+  renderer.render(scene, camera);
+  if (lvl.total && lvl.total > 0) app.setProgress(0, lvl.total);
+  else document.getElementById('hudProgress').textContent = '';
+  if (location.hash.indexOf('diag') >= 0) {
+    const mg = document.createElement('div');
+    mg.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:60;color:#9fe;font:12px monospace;background:#000a;padding:6px;border-radius:8px;white-space:pre';
+    mg.textContent = 'GLB=' + GLB_LOADED + ' objects=' + lvl.group.children.length + ' total=' + (lvl.total || 0);
+    document.body.appendChild(mg);
+  }
+}
+
+app.showMenu = function () {
+  if (app.current) { app.current.dispose(); app.current = null; }
+  document.getElementById('shop').classList.add('hidden');
+  document.getElementById('menu').classList.remove('hidden');
+  document.getElementById('hud').classList.add('hidden');
+  buildMenu();
+};
+
+// ---------------- input ----------------
+function onDown(e) { if (!app.current) return; e.preventDefault(); app._idleT = 0; setPtr(e); app.current.pickDown(raycaster); }
+function onMove(e) { if (!app.current || !app.current.drag) return; e.preventDefault(); setPtr(e); app.current.pickMove(raycaster); }
+function onUp(e) { if (!app.current) return; setPtr(e); app.current.pickUp(raycaster); }
+canvas.addEventListener('pointerdown', onDown, { passive: false });
+canvas.addEventListener('pointermove', onMove, { passive: false });
+canvas.addEventListener('pointerup', onUp);
+canvas.addEventListener('pointercancel', onUp);
+canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+
+// ---------------- loop / boot ----------------
+const clock = new THREE.Clock();
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  if (app.current && app.current.update) app.current.update(dt);
+  if (app.current && !app.current.finished) {
+    app._idleT = (app._idleT || 0) + dt;
+    if (app._idleT > 22 && !app.current._hinted) { app.current._hinted = true; app.toast(app.current.def.desc || 'Objeleri doğru bölgeye sürükle'); }
+  }
+  renderer.render(scene, camera);
+}
+
+try {
+  document.getElementById('back').onclick = function () { app.showMenu(); };
+  var hb = document.getElementById('helpBtn');
+  if (hb) hb.onclick = function () { showMessage('Nasıl oynanır?', 'Objeleri parmağınla (veya fareyle) tut ve doğru bölgeye bırak. Doğru bırakma +10 puan, yanlış -5. Bazı bölümlerde objeye dokunup seçmen, bazılarında sırayla dokunman gerekir. Bölüm sonunda sürdürülebilir beslenmeyle ilgili kısa bir bilgi görürsün. İlerlemen tarayıcıda saklanır.'); };
+  var rb = document.getElementById('resetBtn');
+  if (rb) rb.onclick = function () { save = { unlocked: 1, done: {} }; persist(); buildMenu(); app.toast('İlerleme sıfırlandı'); };
+  addEventListener('keydown', function (ev) { if (ev.key === 'Escape') app.showMenu(); });
+  app.showMenu();
+  var auto = (location.hash || '').match(/#level-(\d+)/);
+  if (auto) startLevel(parseInt(auto[1], 10));
+  if (location.hash.indexOf('shot') >= 0) { var hi = document.getElementById('holdimg'); if (hi) hi.src = '/hold?t=' + Date.now(); }
+  document.getElementById('loading').classList.add('hidden');
+  animate();
+} catch (err) {
+  console.error(err);
+  document.getElementById('loading').textContent = 'Başlatma hatası: ' + err.message;
+}
+</script>
+</body>
+</html>
